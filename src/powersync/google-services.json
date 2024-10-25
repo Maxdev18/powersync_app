@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "309319798725",
+    "project_id": "powersync-c4f88",
+    "storage_bucket": "powersync-c4f88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309319798725:android:1641b0eb3b4e34baef05ac",
+        "android_client_info": {
+          "package_name": "com.powersync.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309319798725-1a09u36fq3gq5nkff6nopusrl6mhrad9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANkT-JBLxZ8A43Ka43iQPfFWMWAPMYrEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309319798725-1a09u36fq3gq5nkff6nopusrl6mhrad9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
