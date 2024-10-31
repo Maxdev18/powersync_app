@@ -12,7 +12,7 @@ export default function LoginScreen() {
       Alert.alert('Error', 'Please enter your email and password.');
       return;
     }
-    router.push('/updateDevice');
+    router.push('/home');
   };
 
   return (
