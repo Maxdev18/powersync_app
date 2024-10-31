@@ -6,8 +6,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-
-  const handleLogin = () => {
+  
+  const handleLogin = () => { // TODO: Change to use user login service
     if (email === '' || password === '') {
       Alert.alert('Error', 'Please enter your email and password.');
       return;
