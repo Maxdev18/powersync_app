@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { collection, addDoc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig'
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userData, setUserData] = useState(null);
   const router = useRouter();
+
+  const data = {
+    name: "Max"
+  }
+
+  useEffect(() => {
+    async function addData() {
+      try {
+        const docRef = await addDoc(collection(db, "user"), data);
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
+    }
+    addData();
+  }, [])
+  
 
   const handleLogin = () => {
     if (email === '' || password === '') {
