@@ -14,18 +14,18 @@ const OverviewCard = ({ name, num, kwh }: any) => {
 
 const styles = StyleSheet.create({
   unique: {
-    fontSize: 24, // Matches 1.5rem (roughly 24px) in React Native
+    fontSize: 24, 
   },
   item: {
     borderRadius: 5,
     backgroundColor: 'white',
     borderColor: 'red',
     borderWidth: 2,
-    width: '47%', // Use percentage as in CSS
-    padding: 10,  // Adds some padding inside the card
+    width: '47%', 
+    padding: 10,  
   },
   title: {
-    fontSize: 14, // Adjust as needed
+    fontSize: 14,
     fontWeight: 'bold',
   },
   subtitle: {

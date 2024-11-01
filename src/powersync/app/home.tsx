@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
-
+import TotalConsumption from '../components/TotalConsumption';
 const Home: React.FC = () => {
   return (
     <View style={styles.app}>
@@ -15,6 +15,7 @@ const Home: React.FC = () => {
       </View>
       
       <PowerUsage/>
+      <TotalConsumption power={43.82}/>
     </View>
   );
 };
