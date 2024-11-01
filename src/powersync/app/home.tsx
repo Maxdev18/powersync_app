@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import OverviewCard from '../components/OverviewCard';
+import PowerUsage from '../components/PowerUsage';
 
 const Home: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const Home: React.FC = () => {
         <OverviewCard name="Estimated cost" num="$1.89" />
       </View>
       
-      {/* Future content like Power Usage can go here */}
+      <PowerUsage/>
     </View>
   );
 };
@@ -32,12 +33,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   overviewContainer: {
-    marginVertical: 15,
+    // marginVertical: 5,
     borderColor: 'red',
     borderWidth: 2,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 15,
+    gap: 12,
+    justifyContent: "space-between",
   },
 });
 

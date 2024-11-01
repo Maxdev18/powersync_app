@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'red',
     borderWidth: 2,
-    width: '46%', // Use percentage as in CSS
+    width: '47%', // Use percentage as in CSS
     padding: 10,  // Adds some padding inside the card
   },
   title: {
