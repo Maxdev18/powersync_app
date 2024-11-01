@@ -44,7 +44,6 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
-        <Text style={styles.orText}>OR</Text>
 
         {/* <GoogleSignIn /> */}
       </View>
