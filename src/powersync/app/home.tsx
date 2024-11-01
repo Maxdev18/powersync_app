@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import TotalConsumption from '../components/TotalConsumption';
+import AddDevice from "../components/AddDevice";
 const Home: React.FC = () => {
   return (
     <View style={styles.app}>
@@ -16,6 +17,16 @@ const Home: React.FC = () => {
       
       <PowerUsage/>
       <TotalConsumption power={43.82}/>
+
+      <View>
+      <Text style={styles.subFont}>Biggest eaters</Text>
+
+      <View style={styles.usedDevices}>
+        {/* Display each device with its details */}
+        <AddDevice icon="📱" name="Carl's Tablet" power={12.43} />
+        <AddDevice icon="🎮" name="Max's Controller" power={10.41} />
+      </View>
+    </View>
     </View>
   );
 };
@@ -42,6 +53,16 @@ const styles = StyleSheet.create({
     gap: 12,
     justifyContent: "space-between",
   },
+  usedDevices: {
+    borderRadius: 5,
+    height: 150,
+    backgroundColor: 'white',
+  },
+  subFont: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    margin: 5,
+  }
 });
 
 export default Home;
