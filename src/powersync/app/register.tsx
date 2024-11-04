@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 
-export default function LoginScreen() {
+export default function RegistrationScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const navigation = useNavigation();
   
-const handleRegister = () =>{
-    Alert.alert('You have been registered smartass.');
-}
+  const handleRegister = () =>{
+      Alert.alert('You have been registered smartass.');
+  }
+
+  const navigateLogin = () => {
+    navigation.navigate('index');
+  }
 
   return (
     <View style={styles.container}>
@@ -54,13 +58,15 @@ const handleRegister = () =>{
 
         
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
 
 
       </View>
 
-      <Text style={styles.signupText}>Already have an account?</Text>
+      <TouchableOpacity onPress={navigateLogin}>
+        <Text style={styles.signupText}>Already have an account?</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -122,3 +128,4 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
 });
+
