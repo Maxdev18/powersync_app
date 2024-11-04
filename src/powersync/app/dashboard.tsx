@@ -4,7 +4,8 @@ import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import TotalConsumption from '../components/TotalConsumption';
 import AddDevice from "../components/AddDevice";
-const Home: React.FC = () => {
+
+const Dashboard: React.FC = () => {
   return (
     <View style={styles.app}>
       <Text style={styles.title}>Overview</Text>
@@ -65,4 +66,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default Dashboard;

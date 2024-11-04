@@ -1,9 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 
 export default function LoginScreen({ onLoginSuccess }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
   
   const handleLogin = () => { // TODO: Change to use user login service
     if (email === '' || password === '') {
@@ -13,6 +15,10 @@ export default function LoginScreen({ onLoginSuccess }: any) {
 
     // TODO: Replace with actual login logic
     onLoginSuccess();
+  };
+
+  const navigateToRegister = () => {
+    navigation.navigate('register'); // Navigates to the Register screen
   };
 
   return (
@@ -45,7 +51,9 @@ export default function LoginScreen({ onLoginSuccess }: any) {
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.signupText}>Don't have an account?</Text>
+      <TouchableOpacity onPress={navigateToRegister}>
+        <Text style={styles.signupText}>Don't have an account?</Text>
+      </TouchableOpacity>
     </View>
   );
 }
