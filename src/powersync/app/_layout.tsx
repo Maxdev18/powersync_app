@@ -1,5 +1,5 @@
-import { Slot } from "expo-router";
+import AppNavigator from "@/components/AppNavigator";
 
 export default function RootLayout() {
-  return <Slot />;
+  return <AppNavigator />;
 }

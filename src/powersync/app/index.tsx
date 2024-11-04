@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
 
-export default function LoginScreen() {
+export default function LoginScreen({ onLoginSuccess }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
   
   const handleLogin = () => { // TODO: Change to use user login service
     if (email === '' || password === '') {
       Alert.alert('Error', 'Please enter your email and password.');
       return;
     }
-    router.push('/home');
+
+    // TODO: Replace with actual login logic
+    onLoginSuccess();
   };
 
   const goRegisterPage = () =>{
