@@ -22,7 +22,7 @@ export default function AppNavigator() {
             name="index" 
             component={(props: any) => <LoginScreen {...props} onLoginSuccess={handleLoginSuccess} />} 
           />
-          <Stack.Screen name="Register" component={RegistrationScreen} />
+          <Stack.Screen name="register" component={RegistrationScreen} />
         </>
       ) : (
         <Stack.Screen name="MainTabs" component={MainTabs} />
