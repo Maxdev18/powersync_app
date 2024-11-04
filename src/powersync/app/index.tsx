@@ -6,7 +6,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  
+
   const handleLogin = () => { // TODO: Change to use user login service
     if (email === '' || password === '') {
       Alert.alert('Error', 'Please enter your email and password.');
@@ -44,6 +44,7 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
+        <Text style={styles.orText}>OR</Text>
 
         {/* <GoogleSignIn /> */}
       </View>
