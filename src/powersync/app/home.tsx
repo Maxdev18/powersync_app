@@ -4,6 +4,7 @@ import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import TotalConsumption from '../components/TotalConsumption';
 import AddDevice from "../components/AddDevice";
+
 const Home: React.FC = () => {
   return (
     <View style={styles.app}>
@@ -14,8 +15,10 @@ const Home: React.FC = () => {
         <OverviewCard name="Low devices" num={1} />
         <OverviewCard name="Estimated cost" num="$1.89" />
       </View>
-      
+      {/* this will display the chart of the week */}
       <PowerUsage/>
+      
+      {/* this will show the total consumption for the week */}
       <TotalConsumption power={43.82}/>
 
       <View>
@@ -27,6 +30,7 @@ const Home: React.FC = () => {
         <AddDevice icon="🎮" name="Max's Controller" power={10.41} />
       </View>
     </View>
+    
     </View>
   );
 };

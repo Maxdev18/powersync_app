@@ -7,26 +7,36 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   
-  const handleLogin = () => { // TODO: Change to use user login service
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Please enter your email and password.');
-      return;
-    }
-    router.push('/home');
-  };
-
-  const goRegisterPage = () =>{
-    router.push('/register');
-  }
+const handleRegister = () =>{
+    Alert.alert('You have been registered smartass.');
+}
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Register</Text>
       
       <View style={styles.centeredContent}>
+      <TextInput
+          style={styles.input}
+          placeholder="First name..."
+          placeholderTextColor="#888"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Last name..."
+          placeholderTextColor="#888"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Email..."
           placeholderTextColor="#888"
           autoCapitalize="none"
           value={email}
@@ -35,26 +45,22 @@ export default function LoginScreen() {
         
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Password..."
           placeholderTextColor="#888"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
         />
 
-        <Text style={styles.forgotText}>Forgot password?</Text>
         
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
 
       </View>
 
-     
-       <TouchableOpacity style={styles.button} onPress={goRegisterPage}>
-          <Text style={styles.buttonText}>Don't have an account?</Text>
-        </TouchableOpacity>
+      <Text style={styles.signupText}>Already have an account?</Text>
     </View>
   );
 }
