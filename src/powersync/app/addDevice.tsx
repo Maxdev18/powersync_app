@@ -11,7 +11,7 @@ type DeviceData = {
   notes: string;
 };
 
-const AddDevice = () => {
+const AddDevice: React.FC = () => {
   const [deviceData, setDeviceData] = useState<DeviceData>({
     name: "",
     group: "",
@@ -130,21 +130,6 @@ const AddDevice = () => {
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
           <Text style={styles.saveButtonText}>Save</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.footerButton}>
-          <Text style={styles.footerButtonText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Text style={styles.footerButtonText}>Devices</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Text style={styles.footerButtonText}>GPS</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.footerButton}>
-          <Text style={styles.footerButtonText}>Profile</Text>
         </TouchableOpacity>
       </View>
     </View>
