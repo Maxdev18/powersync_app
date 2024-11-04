@@ -1,34 +1,42 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useRouter } from 'expo-router';
 
-export default function LoginScreen({ onLoginSuccess }: any) {
+export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
+  const router = useRouter();
   
-  const handleLogin = () => { // TODO: Change to use user login service
-    if (email === '' || password === '') {
-      Alert.alert('Error', 'Please enter your email and password.');
-      return;
-    }
-
-    // TODO: Replace with actual login logic
-    onLoginSuccess();
-  };
-
-  const navigateToRegister = () => {
-    navigation.navigate('register'); // Navigates to the Register screen
-  };
+const handleRegister = () =>{
+    Alert.alert('You have been registered smartass.');
+}
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Register</Text>
       
       <View style={styles.centeredContent}>
+      <TextInput
+          style={styles.input}
+          placeholder="First name..."
+          placeholderTextColor="#888"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Last name..."
+          placeholderTextColor="#888"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Email..."
           placeholderTextColor="#888"
           autoCapitalize="none"
           value={email}
@@ -37,25 +45,22 @@ export default function LoginScreen({ onLoginSuccess }: any) {
         
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Password..."
           placeholderTextColor="#888"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
         />
 
-        <Text style={styles.forgotText}>Forgot password?</Text>
         
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
 
       </View>
 
-      <TouchableOpacity onPress={navigateToRegister}>
-        <Text style={styles.signupText}>Don't have an account?</Text>
-      </TouchableOpacity>
+      <Text style={styles.signupText}>Already have an account?</Text>
     </View>
   );
 }
