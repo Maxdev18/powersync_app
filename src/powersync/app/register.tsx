@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { UserService } from '@/Services/UserService';
+import { User } from '@/Types/User';
+import { Response } from '@/Types/Reponse';
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ onRegistrationSuccess }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [errorMessage, setErrorMessage] = useState<Response | void>()
   const navigation = useNavigation();
   
-  const handleRegister = () =>{
+  const handleRegister = async () =>{
       Alert.alert('You have been registered smartass.');
+      if(email === '' || password === '' || firstName === '' || lastName === '') {
+        Alert.alert('Error', 'Please enter your email and password.');
+        return;
+      }
+
+      const user: User = {
+        firstName,
+        lastName,
+        email,
+        password
+      }
+
+      const response: void | Response = await UserService.createUser(user)
+      if(!response) {
+        onRegistrationSuccess()
+      } else {
+        setErrorMessage(response)
+      }
   }
 
   const navigateLogin = () => {
@@ -58,12 +80,16 @@ export default function RegistrationScreen() {
           onChangeText={setPassword}
         />
 
-        
+        {errorMessage ? 
+          <Text style={styles.errorMessage}>
+            {errorMessage.message}
+          </Text> :
+          null
+        }
+
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
-
-
       </View>
 
       <TouchableOpacity onPress={navigateLogin}>
@@ -129,5 +155,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start', // Aligns "Don't have an account?" to the left
     marginTop: 16,
   },
+  errorMessage: {
+    color: '#FF6464',
+    width: '100%',
+    textAlign: 'right',
+    marginBottom: 16
+  }
 });
 

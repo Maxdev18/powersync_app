@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLoginSuccess = () => {
+  const handleAuthenticationSuccess = () => {
     setIsLoggedIn(true);
   };
 
@@ -20,9 +20,12 @@ export default function AppNavigator() {
         <>
           <Stack.Screen 
             name="index" 
-            component={(props: any) => <LoginScreen {...props} onLoginSuccess={handleLoginSuccess} />} 
+            component={(props: any) => <LoginScreen {...props} onLoginSuccess={handleAuthenticationSuccess} />} 
           />
-          <Stack.Screen name="register" component={RegistrationScreen} />
+          <Stack.Screen 
+            name="register" 
+            component={(props: any) => <RegistrationScreen {...props} onRegistrationSuccess={handleAuthenticationSuccess} />} 
+          />
         </>
       ) : (
         <Stack.Screen name="MainTabs" component={MainTabs} />
