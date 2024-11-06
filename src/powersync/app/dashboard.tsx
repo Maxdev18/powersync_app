@@ -4,8 +4,9 @@ import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import TotalConsumption from '../components/TotalConsumption';
 import AddDevice from "../components/AddDevice";
+import styles from '../styles/overviewPage'
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC = () => { 
   return (
     <View style={styles.app}>
       <Text style={styles.title}>Overview</Text>
@@ -34,39 +35,5 @@ const Dashboard: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  app: {
-    fontFamily: 'sans-serif', // This may vary depending on platform
-    borderColor: 'red',
-    borderWidth: 2,
-    padding: 15,
-    backgroundColor: '#E9F5FF',
-    flex: 1, // Take up available screen space
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  overviewContainer: {
-    // marginVertical: 5,
-    borderColor: 'red',
-    borderWidth: 2,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    justifyContent: "space-between",
-  },
-  usedDevices: {
-    borderRadius: 5,
-    height: 150,
-    backgroundColor: 'white',
-  },
-  subFont: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    margin: 5,
-  }
-});
 
 export default Dashboard;
