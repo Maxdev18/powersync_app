@@ -49,6 +49,8 @@ export default function LoginScreen({ onLoginSuccess }: any) {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
+
+
       </View>
 
       <TouchableOpacity onPress={navigateToRegister}>
