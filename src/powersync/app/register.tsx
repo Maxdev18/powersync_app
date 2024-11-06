@@ -5,6 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function RegistrationScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const navigation = useNavigation();
   
   const handleRegister = () =>{
@@ -26,7 +28,7 @@ export default function RegistrationScreen() {
           placeholderTextColor="#888"
           autoCapitalize="none"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={setFirstName}
         />
 
         <TextInput
@@ -35,7 +37,7 @@ export default function RegistrationScreen() {
           placeholderTextColor="#888"
           autoCapitalize="none"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={setLastName}
         />
 
         <TextInput
