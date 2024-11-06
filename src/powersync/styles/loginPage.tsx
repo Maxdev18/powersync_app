@@ -57,6 +57,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start', // Aligns "Don't have an account?" to the left
     marginTop: 16,
   },
+  errorMessage: {
+        color: '#FF6464',
+        width: '100%',
+        textAlign: 'right',
+        marginBottom: 16
+      }
+
+      
 });
 
 export default styles;
