@@ -27,7 +27,7 @@ export default function RegistrationScreen() {
           placeholder="First name..."
           placeholderTextColor="#888"
           autoCapitalize="none"
-          value={email}
+          value={firstName}
           onChangeText={setFirstName}
         />
 
@@ -36,7 +36,7 @@ export default function RegistrationScreen() {
           placeholder="Last name..."
           placeholderTextColor="#888"
           autoCapitalize="none"
-          value={email}
+          value={lastName}
           onChangeText={setLastName}
         />
 
