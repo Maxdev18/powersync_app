@@ -1,20 +1,33 @@
+import { UserService } from '@/Services/UserService';
+import { User } from '@/Types/User';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Response } from '@/Types/Reponse';
 
 export default function LoginScreen({ onLoginSuccess }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<Response | void>()
   const navigation = useNavigation();
   
-  const handleLogin = () => { // TODO: Change to use user login service
+  const handleLogin = async () => { // TODO: Change to use user login service
     if (email === '' || password === '') {
       Alert.alert('Error', 'Please enter your email and password.');
       return;
     }
 
-    // TODO: Replace with actual login logic
-    onLoginSuccess();
+    const user: User = {
+      email,
+      password
+    }
+
+    const response: void | Response = await UserService.loginUser(user)
+    if(!response) {
+      onLoginSuccess()
+    } else {
+      setErrorMessage(response)
+    }
   };
 
   const navigateToRegister = () => {
@@ -43,6 +56,13 @@ export default function LoginScreen({ onLoginSuccess }: any) {
           value={password}
           onChangeText={setPassword}
         />
+
+        {errorMessage ? 
+          <Text style={styles.errorMessage}>
+            {errorMessage.message}
+          </Text> :
+          null
+        }
 
         <Text style={styles.forgotText}>Forgot password?</Text>
         
@@ -116,4 +136,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start', // Aligns "Don't have an account?" to the left
     marginTop: 16,
   },
+  errorMessage: {
+    color: '#FF6464',
+    width: '100%',
+    textAlign: 'right',
+    marginBottom: 16
+  }
 });
