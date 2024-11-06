@@ -1,184 +1,305 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { Picker } from '@react-native-picker/picker'; // Importing Picker
 
-export default function EditDeviceScreen() {
-  const [name, setName] = useState("");
-  const [group, setGroup] = useState("Carl");
-  const [type, setType] = useState("Flashlight");
-  const [serialNumber] = useState("9251693562395691623");
-  const [cycles] = useState("12");
-  const [condition] = useState("Great");
-  const [notes, setNotes] = useState("");
+type DeviceData = {
+  name: string;
+  group: string;
+  serialNumber: string;
+  cycles: number;
+  condition: string;
+  type: string;
+  notes: string;
+};
 
-  const handleSave = () => {
-    // Handle save action
-    console.log("Device saved");
+const lightTheme = {
+  backgroundColor: "#f7f9fc",
+  textColor: "#333",
+  inputBackgroundColor: "#fff",
+  inputTextColor: "#000",
+  buttonColor: "#007bff",
+  buttonTextColor: "#fff",
+  footerBackgroundColor: "#f0f0f0",
+  footerTextColor: "#333",
+};
+
+const darkTheme = {
+  backgroundColor: "#1c1c1e",
+  textColor: "#f7f7f7",
+  inputBackgroundColor: "#2c2c2e",
+  inputTextColor: "#f7f7f7",
+  buttonColor: "#0a84ff",
+  buttonTextColor: "#fff",
+  footerBackgroundColor: "#2c2c2e",
+  footerTextColor: "#f7f7f7",
+};
+
+const EditDevice = () => {
+  const [deviceData, setDeviceData] = useState<DeviceData>({
+    name: "iPhone 12",
+    group: "Phones",
+    serialNumber: "SN123456789",
+    cycles: 24,
+    condition: "Great",
+    type: "Phone", // Default option for the Picker
+    notes: "No issues, working perfectly.",
+  });
+
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  const handleChange = (name: keyof DeviceData, value: string) => {
+    setDeviceData({
+      ...deviceData,
+      [name]: value,
+    });
   };
 
+  const handleSave = () => {
+    console.log("Updated Device Data:", deviceData);
+  };
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const theme = isDarkMode ? darkTheme : lightTheme;
+  const styles = getStyles(theme);
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Go Back Button */}
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => console.log("Back")}
-      >
-        <Text style={styles.backText}>Go back to your devices</Text>
-      </TouchableOpacity>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton}>
+            <Text style={styles.backButtonText}>Go back to your devices</Text>
+          </TouchableOpacity>
+          <Button title={`Switch to ${isDarkMode ? "Light" : "Dark"} Mode`} onPress={toggleTheme} />
+        </View>
 
-      {/* Title */}
-      <Text style={styles.title}>Edit device</Text>
+        <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: "https://home-gadgets-gizmos.com/cdn/shop/articles/Pngtree_gadgets_in_a_striking_3d_7276667.jpg?v=1724501861&width=533" }}
+            style={styles.image}
+          />
+        </View>
 
-      {/* Form Fields */}
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-      />
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Edit Device</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Group"
-        value={group}
-        onChangeText={setGroup}
-      />
+          <View style={styles.formGroup}>
+            <TouchableOpacity style={styles.scanButton}>
+              <Text style={styles.scanButtonText}>Scan</Text>
+            </TouchableOpacity>
+          </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Type"
-        value={type}
-        onChangeText={setType}
-      />
+          {/* Editable Fields */}
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Name</Text>
+            <TextInput
+              style={styles.input}
+              value={deviceData.name}
+              onChangeText={(value) => handleChange("name", value)}
+              placeholder="Enter device name"
+              placeholderTextColor={theme.textColor}
+            />
+          </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Serial Number"
-        value={serialNumber}
-        editable={false}
-      />
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Group</Text>
+            <TextInput
+              style={styles.input}
+              value={deviceData.group}
+              onChangeText={(value) => handleChange("group", value)}
+              placeholder="Enter group"
+              placeholderTextColor={theme.textColor}
+            />
+          </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Cycles"
-        value={cycles}
-        editable={false}
-      />
+          {/* Non-Editable Fields */}
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Serial Number</Text>
+            <Text style={styles.nonEditableText}>{deviceData.serialNumber}</Text>
+          </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Condition"
-        value={condition}
-        editable={false}
-      />
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Type</Text>
+            <Text style={styles.nonEditableText}>{deviceData.type}</Text>
+          </View>
 
-      <TextInput
-        style={[styles.input, styles.notesInput]}
-        placeholder="Notes"
-        value={notes}
-        onChangeText={setNotes}
-        multiline
-      />
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Cycles</Text>
+            <Text style={styles.nonEditableText}>{deviceData.cycles}</Text>
+          </View>
 
-      {/* Save Button */}
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+          {/* Editable Fields */}
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Condition</Text>
+            <TextInput
+              style={styles.input}
+              value={deviceData.condition}
+              onChangeText={(value) => handleChange("condition", value)}
+              placeholder="Enter condition"
+              placeholderTextColor={theme.textColor}
+            />
+          </View>
 
-      {/* Bottom Navigation */}
-      <View style={styles.navBar}>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>Devices</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>GPS</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>Profile</Text>
-        </TouchableOpacity>
+          <View style={styles.formGroup}>
+            <Text style={styles.textColor}>Notes</Text>
+            <TextInput
+              style={styles.textarea}
+              value={deviceData.notes}
+              onChangeText={(value) => handleChange("notes", value)}
+              placeholder="Enter any notes"
+              multiline={true}
+              placeholderTextColor={theme.textColor}
+            />
+          </View>
+
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.footer}>
+          <TouchableOpacity style={styles.footerButton}>
+            <Text style={styles.footerButtonText}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerButton}>
+            <Text style={styles.footerButtonText}>Devices</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerButton}>
+            <Text style={styles.footerButtonText}>GPS</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.footerButton}>
+            <Text style={styles.footerButtonText}>Profile</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    backgroundColor: "#edfaff",
-    flexGrow: 1,
-    alignItems: "center",
-  },
-  backButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    position: "absolute",
-    top: 9,
-    left: 7,
-  },
-  backText: {
-    fontSize: 16,
-    color: "#313131",
-    fontWeight: "bold",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginTop: 50,
-    alignSelf: "flex-start",
-    paddingLeft: 11,
-  },
-  input: {
-    width: 337,
-    height: 42,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    marginBottom: 16,
-    fontSize: 14,
-    borderColor: "#ccc",
-    borderWidth: 1,
-  },
-  notesInput: {
-    height: 184,
-    textAlignVertical: "top",
-  },
-  saveButton: {
-    width: 337,
-    height: 36,
-    backgroundColor: "#12b8ff",
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  saveButtonText: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  navBar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    height: 59,
-    backgroundColor: "#313131",
-    position: "absolute",
-    bottom: 0,
-  },
-  navItem: {
-    alignItems: "center",
-  },
-  navText: {
-    color: "#fff",
-    fontSize: 10,
-  },
-});
+const getStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.backgroundColor,
+      justifyContent: "space-between",
+    },
+    scrollContainer: {
+      flexGrow: 1,
+    },
+    header: {
+      padding: 10,
+      flexDirection: "row",
+      justifyContent: "space-between",
+    },
+    backButton: {
+      alignSelf: "flex-start",
+    },
+    backButtonText: {
+      color: theme.buttonColor,
+      textDecorationLine: "underline",
+    },
+    imageContainer: {
+      width: "100%",
+      alignItems: "center",
+    },
+    image: {
+      width: "100%",
+      height: 200,
+      resizeMode: "cover",
+    },
+    formContainer: {
+      flex: 1,
+      padding: 20,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: theme.textColor,
+      marginBottom: 20,
+    },
+    formGroup: {
+      marginBottom: 15,
+    },
+    textColor: {
+      color: theme.textColor,
+    },
+    input: {
+      width: "100%",
+      padding: 10,
+      fontSize: 16,
+      borderRadius: 5,
+      borderColor: "#ccc",
+      borderWidth: 1,
+      backgroundColor: theme.inputBackgroundColor,
+      color: theme.inputTextColor,
+    },
+    textarea: {
+      width: "100%",
+      padding: 10,
+      fontSize: 16,
+      borderRadius: 5,
+      borderColor: "#ccc",
+      borderWidth: 1,
+      height: 80,
+      backgroundColor: theme.inputBackgroundColor,
+      color: theme.inputTextColor,
+    },
+    nonEditableText: {
+      width: "100%",
+      padding: 10,
+      fontSize: 16,
+      borderRadius: 5,
+      borderColor: "#ccc",
+      borderWidth: 1,
+      backgroundColor: theme.inputBackgroundColor,
+      color: theme.inputTextColor,
+      textAlignVertical: "center",
+    },
+    picker: {
+      width: "100%",
+      height: 50, // Matching input field height
+      borderColor: "#ccc",
+      borderWidth: 1,
+      borderRadius: 5,
+      backgroundColor: theme.inputBackgroundColor,
+      color: theme.inputTextColor,
+    },
+    scanButton: {
+      backgroundColor: theme.buttonColor,
+      borderRadius: 25,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      alignSelf: "flex-end",
+    },
+    scanButtonText: {
+      color: theme.buttonTextColor,
+    },
+    saveButton: {
+      backgroundColor: theme.buttonColor,
+      borderRadius: 5,
+      padding: 15,
+      alignItems: "center",
+      marginTop: 20,
+    },
+    saveButtonText: {
+      color: theme.buttonTextColor,
+      fontWeight: "bold",
+    },
+    footer: {
+      flexDirection: "row",
+      justifyContent: "space-around",
+      padding: 10,
+      backgroundColor: theme.footerBackgroundColor,
+      borderTopWidth: 1,
+      borderColor: "#ccc",
+    },
+    footerButton: {
+      alignItems: "center",
+    },
+    footerButtonText: {
+      color: theme.footerTextColor,
+    },
+  });
+
+export default EditDevice;
