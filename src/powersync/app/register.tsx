@@ -6,6 +6,8 @@ import styles from '../styles/loginPage'
 export default function RegistrationScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const navigation = useNavigation();
   
   const handleRegister = () =>{
@@ -26,8 +28,8 @@ export default function RegistrationScreen() {
           placeholder="First name..."
           placeholderTextColor="#888"
           autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+          value={firstName}
+          onChangeText={setFirstName}
         />
 
         <TextInput
@@ -35,8 +37,8 @@ export default function RegistrationScreen() {
           placeholder="Last name..."
           placeholderTextColor="#888"
           autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+          value={lastName}
+          onChangeText={setLastName}
         />
 
         <TextInput
