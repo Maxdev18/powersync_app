@@ -1,56 +1,33 @@
-
-
-
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker'; // Importing Picker
-
-type DeviceData = {
-  name: string;
-  group: string;
-  serialNumber: string;
-  cycles: number;
-  condition: string;
-  type: string;
-  notes: string;
-};
-
-const lightTheme = {
-  backgroundColor: "#f7f9fc",
-  textColor: "#333",
-  inputBackgroundColor: "#fff",
-  inputTextColor: "#000",
-  buttonColor: "#007bff",
-  buttonTextColor: "#fff",
-  footerBackgroundColor: "#f0f0f0",
-  footerTextColor: "#333",
-};
-
-const darkTheme = {
-  backgroundColor: "#1c1c1e",
-  textColor: "#f7f7f7",
-  inputBackgroundColor: "#2c2c2e",
-  inputTextColor: "#f7f7f7",
-  buttonColor: "#0a84ff",
-  buttonTextColor: "#fff",
-  footerBackgroundColor: "#2c2c2e",
-  footerTextColor: "#f7f7f7",
-};
+import { Device } from "@/Types/Device";
+import { darkTheme, lightTheme } from "@/styles/theme";
+import { getStyles } from "@/styles/addDevice";
 
 const AddDevice = () => {
-  const [deviceData, setDeviceData] = useState<DeviceData>({
+  const [deviceData, setDeviceData] = useState<Device>({
     name: "",
-    group: "",
-    serialNumber: "",
-    cycles: 12,
-    condition: "Great",
     type: "Phone", // Default option for the Picker
+    serialNumber: "",
+    condition: "Great",
     notes: "",
+    groupName: "",
+    groupID: "",
+    cycles: 12,
+    batteryPercentage: 0,
+    wattage: 0,
+    estimatedLife: 0,
+    estimatedCost: 0,
+    location: {
+      longitude: 0,
+      latitude: 0
+    }
   });
 
   const [isDarkMode, setIsDarkMode] = useState(true);
 
-  const handleChange = (name: keyof DeviceData, value: string) => {
+  const handleChange = (name: keyof Device, value: string) => {
     setDeviceData({
       ...deviceData,
       [name]: value,
@@ -109,8 +86,8 @@ const AddDevice = () => {
             <Text style={styles.textColor}>Group</Text>
             <TextInput
               style={styles.input}
-              value={deviceData.group}
-              onChangeText={(value) => handleChange("group", value)}
+              value={deviceData.groupName}
+              onChangeText={(value) => handleChange("groupName", value)}
               placeholder="Enter group"
               placeholderTextColor={theme.textColor}
             />
@@ -194,119 +171,5 @@ const AddDevice = () => {
     </ScrollView>
   );
 };
-
-const getStyles = (theme: any) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.backgroundColor,
-      justifyContent: "space-between",
-    },
-    scrollContainer: {
-      flexGrow: 1,
-    },
-    header: {
-      padding: 10,
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
-    backButton: {
-      alignSelf: "flex-start",
-    },
-    backButtonText: {
-      color: theme.buttonColor,
-      textDecorationLine: "underline",
-    },
-    imageContainer: {
-      width: "100%",
-      alignItems: "center",
-    },
-    image: {
-      width: "100%",
-      height: 200,
-      resizeMode: "cover",
-    },
-    formContainer: {
-      flex: 1,
-      padding: 20,
-    },
-    title: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: theme.textColor,
-      marginBottom: 20,
-    },
-    formGroup: {
-      marginBottom: 15,
-    },
-    textColor: {
-      color: theme.textColor,
-    },
-    input: {
-      width: "100%",
-      padding: 10,
-      fontSize: 16,
-      borderRadius: 5,
-      borderColor: "#ccc",
-      borderWidth: 1,
-      backgroundColor: theme.inputBackgroundColor,
-      color: theme.inputTextColor,
-    },
-    textarea: {
-      width: "100%",
-      padding: 10,
-      fontSize: 16,
-      borderRadius: 5,
-      borderColor: "#ccc",
-      borderWidth: 1,
-      height: 80,
-      backgroundColor: theme.inputBackgroundColor,
-      color: theme.inputTextColor,
-    },
-    picker: {
-      width: "100%",
-      height: 50, // Matching input field height
-      borderColor: "#ccc",
-      borderWidth: 1,
-      borderRadius: 5,
-      backgroundColor: theme.inputBackgroundColor,
-      color: theme.inputTextColor,
-    },
-    scanButton: {
-      backgroundColor: theme.buttonColor,
-      borderRadius: 25,
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      alignSelf: "flex-end",
-    },
-    scanButtonText: {
-      color: theme.buttonTextColor,
-    },
-    saveButton: {
-      backgroundColor: theme.buttonColor,
-      borderRadius: 5,
-      padding: 15,
-      alignItems: "center",
-      marginTop: 20,
-    },
-    saveButtonText: {
-      color: theme.buttonTextColor,
-      fontWeight: "bold",
-    },
-    footer: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-      padding: 10,
-      backgroundColor: theme.footerBackgroundColor,
-      borderTopWidth: 1,
-      borderColor: "#ccc",
-    },
-    footerButton: {
-      alignItems: "center",
-    },
-    footerButtonText: {
-      color: theme.footerTextColor,
-    },
-  });
 
 export default AddDevice;
