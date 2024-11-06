@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
       <TotalConsumption power={43.82}/>
 
       <View>
-      <Text style={styles.subFont}>Biggest eaters</Text>
+      <Text style={styles.subTitle}>Biggest eaters</Text>
 
       <View style={styles.usedDevices}>
         {/* Display each device with its details */}

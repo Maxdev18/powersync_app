@@ -4,8 +4,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     app: {
       fontFamily: 'sans-serif', // This may vary depending on platform
-      borderColor: 'red',
-      borderWidth: 2,
+      borderWidth: 1,
       padding: 15,
       backgroundColor: '#E9F5FF',
       flex: 1, // Take up available screen space
@@ -13,11 +12,9 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 24,
       fontWeight: 'bold',
+      margin: 5
     },
     overviewContainer: {
-      // marginVertical: 5,
-      borderColor: 'red',
-      borderWidth: 2,
       flexDirection: 'row',
       flexWrap: 'wrap',
       gap: 12,
@@ -44,8 +41,7 @@ const styles = StyleSheet.create({
     item: {
         borderRadius: 5,
         backgroundColor: 'white',
-        borderColor: 'red',
-        borderWidth: 2,
+        borderWidth: 1,
         width: '47%', 
         padding: 10,  
       },
@@ -54,21 +50,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderColor: 'black',
-        borderWidth: 2,
+        borderWidth: 1,
         height: 120,
         backgroundColor: 'white',
       },
     subTitle: {
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 'bold',
-        marginVertical: 10,
+        marginVertical: 8,
       },
       weeklyConsumption: {
-        marginVertical: 15,
+        marginTop: 20,
         backgroundColor: 'white',
         borderRadius: 5,
-        borderColor: 'red',
-        borderWidth: 2,
+        borderWidth: 1,
         padding: 10,
       },
   });
