@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
       margin: 5,
     },
     unique: {
-        fontSize: 24, 
+        fontSize: 21, 
+        fontWeight: 'bold',
       },
     normalFont: {
         fontSize: 14,
@@ -61,6 +62,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginVertical: 10,
+      },
+      weeklyConsumption: {
+        marginVertical: 15,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        borderColor: 'red',
+        borderWidth: 2,
+        padding: 10,
       },
   });
 

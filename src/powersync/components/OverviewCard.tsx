@@ -5,7 +5,7 @@ const OverviewCard = ({ name, num, kwh }: any) => {
   return (
     <View style={styles.item}>
       <Text style={styles.normalFont}>{name}</Text>
-      <Text style={styles.normalFont}>
+      <Text >
         <Text style={styles.unique}>{num} </Text> {kwh}
       </Text>
     </View>
