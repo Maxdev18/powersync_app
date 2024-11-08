@@ -7,9 +7,10 @@ export class UserService {
   static async createUser(user: User): Promise<void | Response> {
     try {
       const collectionRef = collection(db, "user")
-      const userDoc = query(collectionRef, where('email', '==', user.email))
+      const userDocQuery = query(collectionRef, where('email', '==', user.email))
+      const querySnapshot = await getDocs(userDocQuery)
 
-      if(!userDoc) {
+      if(querySnapshot.empty) {
         const docRef = await addDoc(collection(db, "user"), user);
         console.log("User created with ID: ", docRef.id);
       } else {
