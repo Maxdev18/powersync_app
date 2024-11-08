@@ -19,7 +19,7 @@ function AppNavigator() {
     >
       <Tab.Screen 
         name="Home" 
-        component={Dashboard} 
+        component={() => <Dashboard />} 
         options={{ 
           tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
@@ -29,7 +29,7 @@ function AppNavigator() {
       />
       <Tab.Screen 
         name="Devices" 
-        component={AddDevice} 
+        component={() => <AddDevice />} 
         options={{ 
           tabBarLabel: 'Devices',
           tabBarIcon: ({ color, size }) => (
@@ -39,7 +39,7 @@ function AppNavigator() {
       />
       <Tab.Screen 
         name="GPS" 
-        component={GPS} 
+        component={() => <GPS />} 
         options={{ 
           tabBarLabel: 'GPS',
           tabBarIcon: ({ color, size }) => (
@@ -49,7 +49,7 @@ function AppNavigator() {
       />
       <Tab.Screen 
         name="Profile" 
-        component={Profile} 
+        component={() => <Profile />} 
         options={{ 
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size }) => (
