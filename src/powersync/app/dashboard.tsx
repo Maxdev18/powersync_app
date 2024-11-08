@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import TotalConsumption from '../components/TotalConsumption';

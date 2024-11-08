@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Dashboard from './dashboard';
 import AddDevice from './addDevice';
+import GPS from './gps';
+import Profile from './profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,6 +34,26 @@ function AppNavigator() {
           tabBarLabel: 'Devices',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="tablet-portrait-outline" color={color} size={size} />
+          ),
+        }} 
+      />
+      <Tab.Screen 
+        name="GPS" 
+        component={GPS} 
+        options={{ 
+          tabBarLabel: 'GPS',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="location-outline" color={color} size={size} />
+          ),
+        }} 
+      />
+      <Tab.Screen 
+        name="Profile" 
+        component={Profile} 
+        options={{ 
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
           ),
         }} 
       />
