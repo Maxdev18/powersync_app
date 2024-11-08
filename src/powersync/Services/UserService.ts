@@ -1,10 +1,10 @@
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore"; 
+import { collection, addDoc, query, where, getDocs, getDoc } from "firebase/firestore"; 
 import { db } from '../firebaseConfig';
 import { User } from "@/Types/User";
 import { Response } from "@/Types/Reponse";
 
 export class UserService {
-  static async createUser(user: User): Promise<void | Response> {
+  static async createUser(user: User): Promise<Response> {
     try {
       const collectionRef = collection(db, "user")
       const userDocQuery = query(collectionRef, where('email', '==', user.email))
@@ -12,7 +12,17 @@ export class UserService {
 
       if(querySnapshot.empty) {
         const docRef = await addDoc(collection(db, "user"), user);
-        console.log("User created with ID: ", docRef.id);
+        const userDoc = await getDoc(docRef)
+        const userId = userDoc.id
+        const userData = userDoc.data()
+        
+        const response: Response = {
+          message: "Registered successfully",
+          data: { ...userData, id: userId, password: undefined },
+          isError: true
+        }
+
+        return response
       } else {
         const response: Response = {
           message: "Email already exists",
@@ -22,18 +32,27 @@ export class UserService {
         return response
       }
     } catch (e) {
-      console.error("Error adding document: ", e);
+      console.error("Error creating user: ", e);
+      
+      const response: Response = {
+        message: "Error creating user",
+        isError: true
+      }
+      
+      return response
     }
   }
 
-  static async loginUser(user: User): Promise<void | Response> {
+  static async loginUser(user: User): Promise<Response> {
     try {
       const collectionRef = collection(db, "user")
       const userDocQuery = query(collectionRef, where('email', '==', user.email))
       const querySnapshot = await getDocs(userDocQuery)
 
       if(!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data()
+        const userDoc = querySnapshot.docs[0]
+        const userId = userDoc.id
+        const userData = userDoc.data()
 
         if(user.password !== userData.password) {
           const response: Response = {
@@ -42,9 +61,15 @@ export class UserService {
           }
 
           return response
-        }
+        } else {
+          const response: Response = {
+            message: "Authenticated",
+            data: { ...userData, id: userId, password: undefined },
+            isError: true
+          }
 
-        console.log("User login successful")
+          return response
+        }
       } else {
         const response: Response = {
           message: "Incorrect email or password",
@@ -55,11 +80,46 @@ export class UserService {
       }
     } catch(e) {
       console.error("Error logging in user: ", e);
-      return;
+      
+      const response: Response = {
+        message: "Error logging in",
+        isError: true
+      }
+
+      return response;
     }
   }
 
-  async updateUser(user: User) {
+  static async updateUser(user: User): Promise<Response> {
+    try {
+      const collectionRef = collection(db, "user")
+      const userDocQuery = query(collectionRef, where('id', '==', user.id))
+      const querySnapshot = await getDocs(userDocQuery)
 
+      if(!querySnapshot.empty) {
+        const response: Response = {
+          message: "Updated profile",
+          isError: false
+        }
+
+        return response
+      } else {
+        const response: Response = {
+          message: "User doesn't exist",
+          isError: true
+        }
+
+        return response
+      }
+    } catch (e) {
+      console.log("Error updating user", e)
+
+      const response: Response = {
+        message: "Error updating user",
+        isError: true
+      }
+
+      return response
+    }
   }
 }
