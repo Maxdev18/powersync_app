@@ -23,8 +23,8 @@ export default function LoginScreen({ onLoginSuccess }: any) {
       password
     }
 
-    const response: void | Response = await UserService.loginUser(user)
-    if(!response) {
+    const response: Response = await UserService.loginUser(user)
+    if(!response.isError) {
       onLoginSuccess()
     } else {
       setErrorMessage(response)

@@ -28,8 +28,8 @@ export default function RegistrationScreen({ onRegistrationSuccess }: any) {
         password
       }
 
-      const response: void | Response = await UserService.createUser(user)
-      if(!response) {
+      const response: Response = await UserService.createUser(user)
+      if(!response.isError) {
         onRegistrationSuccess()
       } else {
         setErrorMessage(response)
