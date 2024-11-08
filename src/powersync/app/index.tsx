@@ -24,6 +24,7 @@ export default function LoginScreen({ onLoginSuccess }: any) {
     }
 
     const response: Response = await UserService.loginUser(user)
+    console.log(response)
     if(!response.isError) {
       onLoginSuccess()
     } else {

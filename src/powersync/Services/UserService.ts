@@ -19,7 +19,7 @@ export class UserService {
         const response: Response = {
           message: "Registered successfully",
           data: { ...userData, id: userId, password: undefined },
-          isError: true
+          isError: false
         }
 
         return response
@@ -65,7 +65,7 @@ export class UserService {
           const response: Response = {
             message: "Authenticated",
             data: { ...userData, id: userId, password: undefined },
-            isError: true
+            isError: false
           }
 
           return response
