@@ -14,7 +14,7 @@ export default function RegistrationScreen({ onRegistrationSuccess }: any) {
   const [errorMessage, setErrorMessage] = useState<Response | void>()
   const navigation = useNavigation();
   
-  const handleRegister = async () =>{
+  const handleRegister = async () =>{// this is called when button is pressed
       Alert.alert('You have been registered smartass.');
       if(email === '' || password === '' || firstName === '' || lastName === '') {
         Alert.alert('Error', 'Please enter your email and password.');

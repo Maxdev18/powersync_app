@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
-import { Picker } from '@react-native-picker/picker'; // Importing Picker
+import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView, Alert } from "react-native";
+import { Picker } from '@react-native-picker/picker';
+import { DeviceService } from "@/Services/DeviceService"; // Import DeviceService
 import { Device } from "@/Types/Device";
 import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/addDevice";
@@ -8,9 +9,9 @@ import { getStyles } from "@/styles/addDevice";
 const AddDevice = () => {
   const [deviceData, setDeviceData] = useState<Device>({
     name: "",
-    type: "Phone", // Default option for the Picker
+    type: "",
     serialNumber: "",
-    condition: "Great",
+    condition: "",
     notes: "",
     groupName: "",
     groupID: "",
@@ -34,8 +35,18 @@ const AddDevice = () => {
     });
   };
 
-  const handleSave = () => {
-    console.log("Device Data:", deviceData);
+  const handleSave = async () => {
+    try {
+      const response = await DeviceService.createDevice(deviceData); // Call the service
+      if (!response.isError) {
+        Alert.alert("Success", "Device added");
+      } else {
+        Alert.alert("Error", "Failed to create device");
+      }
+    } catch (error) {
+      console.error("Error saving device:", error);
+      Alert.alert("Error", "An error occurred while saving the device");
+    }
   };
 
   const toggleTheme = () => {
@@ -108,7 +119,7 @@ const AddDevice = () => {
             <Text style={styles.textColor}>Type</Text>
             <Picker
               selectedValue={deviceData.type}
-              style={styles.picker} // Picker styling
+              style={styles.picker}
               onValueChange={(itemValue) => handleChange("type", itemValue)}
             >
               <Picker.Item label="Phone" value="Phone" />
