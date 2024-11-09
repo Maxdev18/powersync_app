@@ -4,11 +4,17 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#edfaff',
-    // padding: 20,
   },
+
   darkBackground: {
     backgroundColor: '#2c2c2c',
+    color: 'white',
   },
+
+  // darkModeInput: {
+  //   backgroundColor: '#2c2c2c',
+  //   color: 'white',
+  // },
   profileIconBackground: {
     height: 120,
     backgroundColor: '#58b4ff',

@@ -21,7 +21,7 @@ const Profile: React.FC = () => {
         
       </View>
 
-      <Text style={styles.header}>Your profile</Text>
+      <Text style={[styles.header, darkMode && styles.darkBackground]}>Your profile</Text>
 
       <View style={styles.inputContainer}> {/* This is the container for the input boxes */}
         <View style={styles.inputBox}> {/* I put each input in separate view (div) */}
