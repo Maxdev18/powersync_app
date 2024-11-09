@@ -12,15 +12,15 @@ const Dashboard: React.FC = () => {
       <Text style={styles.title}>Overview</Text>
       
       <View style={styles.overviewContainer}>
-        <OverviewCard name="Power consumption" num={10.43} kwh="kWh" />
-        <OverviewCard name="Low devices" num={1} />
-        <OverviewCard name="Estimated cost" num="$1.89" />
+        <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={10.43} kwh="kWh" />
+        <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={1} />
+        <OverviewCard iconName="cash-outline" iconColor="green" name="Estimated cost" num="$1.89" />
       </View>
       {/* this will display the chart of the week */}
       <PowerUsage/>
       
       {/* this will show the total consumption for the week */}
-      <TotalConsumption power={43.82}/>
+      <TotalConsumption iconName="flash-outline" iconColor="blue" power={43.82}/>
 
       <View>
       <Text style={styles.subTitle}>Biggest eaters</Text>

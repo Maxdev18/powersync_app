@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#E9F5FF',
       flex: 1, // Take up available screen space
     },
+    icon:{
+      position: 'absolute',
+      top: 8,
+      right: 8,
+    },
     title: {
       fontSize: 24,
       fontWeight: 'bold',

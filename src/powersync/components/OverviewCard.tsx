@@ -1,13 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import styles from '../styles/overviewPage'
-const OverviewCard = ({ name, num, kwh }: any) => {
+import Icon from 'react-native-vector-icons/Ionicons';
+const OverviewCard = ({iconName, iconColor, name, num, kwh }: any) => {
   return (
     <View style={styles.item}>
       <Text style={styles.normalFont}>{name}</Text>
       <Text >
         <Text style={styles.unique}>{num} </Text> {kwh}
       </Text>
+        <Icon name={iconName} size={20} color={iconColor} style={styles.icon} />
     </View>
   );
 };
