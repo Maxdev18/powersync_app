@@ -13,10 +13,6 @@ const Profile: React.FC = () => {
       setDarkMode(!darkMode);
     };
 
-    const handleFirstNameChange = (text: string) => {
-      setFirstName(text);
-    };
-
     return (
          <View style={[styles.container, darkMode && styles.darkBackground]}>
       <View style={styles.profileIconBackground}>
