@@ -4,39 +4,42 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#edfaff',
-    padding: 20,
+    // padding: 20,
   },
   darkBackground: {
     backgroundColor: '#2c2c2c',
   },
   profileIconBackground: {
-    height: 100,
+    height: 120,
     backgroundColor: '#58b4ff',
     justifyContent: 'center',
     alignItems: 'center',
-   margin: 0,
   },
   
   header: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginVertical: 10,
+    // padding: 12 10 0 10,  
+    paddingLeft: 12,
+    paddingTop: 12, 
   },
   inputContainer: {
-    marginVertical: 15,
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 15,
     justifyContent: 'space-between',
+    padding: 12,  
   },
   inputBox: {
     backgroundColor: 'white',
-    padding: 8,
+    padding: 6,
     borderWidth: 1,
     borderColor: 'black',
     borderRadius: 5,
     width: '46%',
+    borderColor: 'rgba(0, 0, 0, 0.2)',
   },
+
   fullWidth: {
     width: '100%',
   },
@@ -49,10 +52,12 @@ export default StyleSheet.create({
     textAlign: 'right',
     color: '#0086f3',
     marginVertical: 10,
+    paddingRight: 15,
   },
   darkModeToggle: {
     backgroundColor: 'white',
-    marginVertical: 10,
+    marginVertical: 10, 
+    marginHorizontal: 12,
     borderWidth: 1,
     borderColor: 'black',
     borderRadius: 5,
@@ -61,6 +66,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     padding: 8,
   },
+  
   darkModeTextContainer: {
     flex: 1,
     paddingRight: 10,
@@ -74,11 +80,14 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 40,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
+    width: '30%',
+    marginLeft: '67%',
+
   },
   saveButtonText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: 'bold',
   },
 });
