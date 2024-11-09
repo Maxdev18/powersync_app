@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
 
       <View style={styles.inputContainer}> {/* This is the container for the input boxes */}
         <View style={styles.inputBox}> {/* I put each input in separate view (div) */}
-          <Text>First name</Text>
+          <Text>First name</Text> 
           <TextInput style={styles.input} value={firstName} onChangeText={setFirstName} />
         </View>
         <View style={styles.inputBox}>
