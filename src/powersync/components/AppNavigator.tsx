@@ -14,17 +14,26 @@ export default function AppNavigator() {
     setIsLoggedIn(true);
   };
 
+  // Wrapper components to avoid inline functions
+  const LoginScreenWrapper = (props: any) => (
+    <LoginScreen {...props} onLoginSuccess={handleAuthenticationSuccess} />
+  );
+
+  const RegistrationScreenWrapper = (props: any) => (
+    <RegistrationScreen {...props} onRegistrationSuccess={handleAuthenticationSuccess} />
+  );
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!isLoggedIn ? (
         <>
           <Stack.Screen 
             name="index" 
-            component={(props: any) => <LoginScreen {...props} onLoginSuccess={handleAuthenticationSuccess} />} 
+            component={LoginScreenWrapper} // Pass wrapper directly
           />
           <Stack.Screen 
             name="register" 
-            component={(props: any) => <RegistrationScreen {...props} onRegistrationSuccess={handleAuthenticationSuccess} />} 
+            component={RegistrationScreenWrapper} // Pass wrapper directly
           />
         </>
       ) : (
