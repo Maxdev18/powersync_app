@@ -5,6 +5,8 @@ import Dashboard from './dashboard';
 import AddDevice from './addDevice';
 import GPS from './gps';
 import Profile from './profile';
+import Device from './device';
+import UpdateDevice from './updateDevice';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,16 +28,37 @@ function AppNavigator() {
             <Ionicons name="home-outline" color={color} size={size} />
           ),
         }} 
+        
       />
-      <Tab.Screen 
+         <Tab.Screen 
         name="Devices" 
-        component={() => <AddDevice />} 
+        component={() => <Device />} 
         options={{ 
           tabBarLabel: 'Devices',
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="tablet-portrait-outline" color={color} size={size} />
           ),
         }} 
+        />
+      <Tab.Screen 
+        name="+Device" 
+        component={() => <AddDevice />} 
+        options={{ 
+          tabBarLabel: '+Device',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="tablet-portrait-outline" color={color} size={size} />
+          ),
+        }} 
+        />
+        <Tab.Screen 
+          name="Edit Device" 
+          component={() => <UpdateDevice />} 
+          options={{ 
+            tabBarLabel: 'EditDevice',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="tablet-portrait-outline" color={color} size={size} />
+            ),
+          }} 
       />
       <Tab.Screen 
         name="GPS" 
