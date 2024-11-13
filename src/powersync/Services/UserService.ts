@@ -2,7 +2,9 @@ import { collection, addDoc, query, where, getDocs, getDoc, updateDoc, doc } fro
 import { db } from '../firebaseConfig';
 import { User } from "@/Types/User";
 import { Response } from "@/Types/Reponse";
-import { getData, storeData, updateKey } from "@/storage/storage";
+import { storeData, updateKey } from "@/storage/storage";
+import { GroupService } from "./GroupService";
+import { DeviceService } from "./DeviceService";
 
 export class UserService {
   static async createUser(user: User): Promise<Response> {
@@ -22,6 +24,8 @@ export class UserService {
           data: { ...userData, id: userId, password: undefined },
           isError: false
         }
+
+        await storeData("user", { ...userData, id: userId, password: undefined })
 
         return response
       } else {
@@ -70,6 +74,8 @@ export class UserService {
           }
 
           await storeData("user", { ...userData, id: userId, password: undefined })
+          await GroupService.getGroupsByUser(userId)
+          await DeviceService.getDevicesByGroupIds()
 
           return response
         }
