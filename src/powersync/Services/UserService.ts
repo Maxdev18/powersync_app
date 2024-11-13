@@ -1,7 +1,8 @@
-import { collection, addDoc, query, where, getDocs, getDoc } from "firebase/firestore"; 
+import { collection, addDoc, query, where, getDocs, getDoc, updateDoc, doc } from "firebase/firestore"; 
 import { db } from '../firebaseConfig';
 import { User } from "@/Types/User";
 import { Response } from "@/Types/Reponse";
+import { getData, storeData, updateKey } from "@/storage/storage";
 
 export class UserService {
   static async createUser(user: User): Promise<Response> {
@@ -68,6 +69,8 @@ export class UserService {
             isError: false
           }
 
+          await storeData("user", { ...userData, id: userId, password: undefined })
+
           return response
         }
       } else {
@@ -93,6 +96,7 @@ export class UserService {
   static async updateUser(user: User): Promise<Response> {
     try {
       const collectionRef = collection(db, "user")
+      const docRef = doc(db, "user", user.id as string);
       const userDocQuery = query(collectionRef, where('id', '==', user.id))
       const querySnapshot = await getDocs(userDocQuery)
 
@@ -101,6 +105,9 @@ export class UserService {
           message: "Updated profile",
           isError: false
         }
+
+        updateDoc(docRef, user)
+        await updateKey("user", { ...querySnapshot.docs[0].data(), id: querySnapshot.docs[0].id })
 
         return response
       } else {
