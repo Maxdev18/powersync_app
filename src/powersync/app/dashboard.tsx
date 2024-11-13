@@ -5,6 +5,7 @@ import PowerUsage from '../components/PowerUsage';
 import TotalConsumption from '../components/TotalConsumption';
 import AddDevice from "../components/AddDevice";
 import styles from '../styles/overviewPage'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Dashboard: React.FC = () => { 
   return (
@@ -24,14 +25,17 @@ const Dashboard: React.FC = () => {
 
       <View>
       <Text style={styles.subTitle}>Biggest eaters</Text>
-
-      <View style={styles.usedDevices}>
-        {/* Display each device with its details */}
+      <ScrollView style={styles.usedDevices}>
+        
         <AddDevice icon="📱" name="Carl's Tablet" power={12.43} />
         <AddDevice icon="🎮" name="Max's Controller" power={10.41} />
-      </View>
+        <AddDevice icon="🎮" name="Max's Controller" power={10.41} />
+        <AddDevice icon="🎮" name="Max's Controller" power={10.41} />
+        <AddDevice icon="🎮" name="Max's Controller" power={10.41} />
+        
+      </ScrollView>
     </View>
-    
+
     </View>
   );
 };
