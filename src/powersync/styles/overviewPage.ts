@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     usedDevices: {
       borderRadius: 5,
-      height: 150,
+      height: 180,
       backgroundColor: 'white',
     },
     subFont: {
@@ -48,16 +48,18 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 1,
         width: '47%', 
-        padding: 10,  
+        padding: 5,  
+        paddingBottom: 0,
+        borderColor: 'rgba(0, 0, 0, 0.2)',
       },
       powerChart: {
         borderRadius: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: 'black',
         borderWidth: 1,
         height: 120,
         backgroundColor: 'white',
+        borderColor: 'rgba(0, 0, 0, 0.2)',
       },
     subTitle: {
         fontSize: 15,
@@ -70,6 +72,38 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderWidth: 1,
         padding: 10,
+        borderColor: 'rgba(0, 0, 0, 0.2)',
+      },
+
+      biggestEaterContainer: {
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 7,
+        borderRadius: 5,
+        backgroundColor: 'white',
+        borderColor: 'rgba(0, 0, 0, 0.2)',
+      },
+      
+      groupItem1: {
+        flexGrow: 1,
+        alignItems: 'center',
+      },
+      groupItem2: {
+        flexGrow: 4,
+        paddingLeft: 5,
+      },
+      usedMostName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
+      logo: {
+        fontSize: 14,
+        color: 'gray',
+      },
+      power: {
+        fontSize: 16,
+        fontWeight: 'bold',
       },
   });
 

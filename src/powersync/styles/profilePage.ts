@@ -39,7 +39,7 @@ export default StyleSheet.create({
   inputBox: {
     backgroundColor: 'white',
     padding: 6,
-    borderWidth: 1,
+    borderWidth: 1, 
     borderColor: 'black',
     borderRadius: 5,
     width: '46%',
