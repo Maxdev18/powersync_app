@@ -7,6 +7,7 @@ import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/addDevice";
 
 const AddDevice = () => {
+  const [errorMessage, setErrorMessage] = useState<Response | void>()
   const [deviceData, setDeviceData] = useState<Device>({
     name: "",
     type: "",
@@ -15,7 +16,7 @@ const AddDevice = () => {
     notes: "",
     groupName: "",
     groupID: "",
-    cycles: 12,
+    cycles: 0,
     batteryPercentage: 0,
     wattage: 0,
     estimatedLife: 0,
@@ -26,7 +27,10 @@ const AddDevice = () => {
     }
   });
 
+
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [message, setMessage] = useState<string | null>(null); // State variable for the message 
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null); // State variable for message type
 
   const handleChange = (name: keyof Device, value: string) => {
     setDeviceData({
@@ -36,16 +40,25 @@ const AddDevice = () => {
   };
 
   const handleSave = async () => {
+
+    if (!deviceData.name || !deviceData.type || !deviceData.serialNumber || !deviceData.condition) { 
+        setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition."); setMessageType("error"); 
+        return;
+        }
+
     try {
       const response = await DeviceService.createDevice(deviceData); // Call the service
       if (!response.isError) {
-        Alert.alert("Success", "Device added");
+        setMessage("Device added successfully!"); 
+        setMessageType("success");
       } else {
-        Alert.alert("Error", "Failed to create device");
+        setMessage("Failed to create device."); 
+        setMessageType("error");
       }
     } catch (error) {
-      console.error("Error saving device:", error);
-      Alert.alert("Error", "An error occurred while saving the device");
+      console.error("Error saving device:", error); 
+      setMessage("An error occurred while saving the device."); 
+      setMessageType("error");
     }
   };
 
@@ -122,6 +135,7 @@ const AddDevice = () => {
               style={styles.picker}
               onValueChange={(itemValue) => handleChange("type", itemValue)}
             >
+              <Picker.Item label="" value="" />
               <Picker.Item label="Phone" value="Phone" />
               <Picker.Item label="Tablet" value="Tablet" />
               <Picker.Item label="Headphones" value="Headphones" />
@@ -129,22 +143,32 @@ const AddDevice = () => {
           </View>
 
           <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Cycles</Text>
-            <TextInput
-              style={styles.input}
-              value={`${deviceData.cycles}`}
-              keyboardType="numeric"
-              editable={false}
-            />
+              <Text style={styles.textColor}>Cycles</Text>
+                <TextInput
+                  keyboardType="numeric"
+                  style={styles.input}
+                  value={String(deviceData.cycles)}  // Convert to string
+                  onChangeText={(value) => handleChange("cycles", value)}
+                  placeholder="000"
+                  placeholderTextColor={theme.textColor}
+                  // editable={false}
+                />
           </View>
 
           <View style={styles.formGroup}>
             <Text style={styles.textColor}>Condition</Text>
-            <TextInput
-              style={styles.input}
-              value={deviceData.condition}
-              editable={false}
-            />
+            <Picker
+              selectedValue={deviceData.type}
+              style={styles.picker}
+              onValueChange={(itemValue) => handleChange("condition", itemValue)}
+            >
+              <Picker.Item label="" value="" />
+              <Picker.Item label="Great" value="Great" />
+              <Picker.Item label="Good" value="Good" />
+              <Picker.Item label="Ok" value="Ok" />
+              <Picker.Item label="Poor" value="Poor" />
+              <Picker.Item label="Badly Damaged" value="Badly Damaged" />
+            </Picker>
           </View>
 
           <View style={styles.formGroup}>
@@ -158,24 +182,14 @@ const AddDevice = () => {
               placeholderTextColor={theme.textColor}
             />
           </View>
-
+          
+          {message && ( 
+          <Text style={[styles.message, messageType === "error" ? styles.errorMessage : styles.successMessage]}> 
+              {message} 
+          </Text>
+          )}
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <Text style={styles.saveButtonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>Home</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>Devices</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>GPS</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>Profile</Text>
           </TouchableOpacity>
         </View>
       </View>
