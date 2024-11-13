@@ -1,5 +1,5 @@
 export type User = {
-    id?: string
+    id?: string //prob unnecessary since this is automatically generated
     firstName?: string
     lastName?: string
     email: string

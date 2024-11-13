@@ -128,6 +128,24 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  getUserIDButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  getUserIDButtonText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  userIDContainer: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+  },
+  
 });
 
 export default styles;
