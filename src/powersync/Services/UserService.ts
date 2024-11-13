@@ -129,4 +129,42 @@ export class UserService {
       return response
     }
   }
+  
+  static async getUserID(email: string): Promise<Response> {
+    try {
+      const collectionRef = collection(db, "user");
+      const userDocQuery = query(collectionRef, where('email', '==', email));
+      const querySnapshot = await getDocs(userDocQuery);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userId = userDoc.id;
+
+        const response: Response = {
+          message: "User found",
+          data: { userId },
+          isError: false,
+        };
+
+        return response;
+      } else {
+        const response: Response = {
+          message: "User not found",
+          isError: true,
+        };
+
+        return response;
+      }
+    } catch (e) {
+      console.error("Error fetching user ID: ", e);
+
+      const response: Response = {
+        message: "Error fetching user ID",
+        isError: true,
+      };
+
+      return response;
+    }
+  }
 }
+

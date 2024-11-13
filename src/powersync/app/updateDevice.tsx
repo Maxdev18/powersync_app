@@ -64,6 +64,12 @@ const EditDevice = () => {
         <View style={styles.formContainer}>
           <Text style={styles.title}>Edit Device</Text>
 
+          <View style={styles.formGroup}>
+            <TouchableOpacity style={styles.scanButton}>
+              <Text style={styles.scanButtonText}>Scan</Text>
+            </TouchableOpacity>
+          </View>
+
           {/* Editable Fields */}
           <View style={styles.formGroup}>
             <Text style={styles.textColor}>Name</Text>

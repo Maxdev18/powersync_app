@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native';
+import { getUserID } from '../Services/UserService'; // Import your service to get the user ID
 import styles from '../styles/device';
 
 interface Device {
@@ -19,7 +20,7 @@ interface DeviceGroup {
 }
 
 const DevicesScreen = () => {
-  const navigation = useNavigation(); // Use the navigation hook
+  const navigation = useNavigation();
 
   const [deviceGroups, setDeviceGroups] = useState<DeviceGroup[]>([
     {
@@ -48,6 +49,7 @@ const DevicesScreen = () => {
 
   const [newGroupName, setNewGroupName] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const [userID, setUserID] = useState<string | null>(null); // State to store the user ID
 
   const toggleGroupExpansion = (groupId: number) => {
     setDeviceGroups((prevGroups) =>
@@ -74,20 +76,7 @@ const DevicesScreen = () => {
   };
 
   const handleDeleteGroup = (groupId: number) => {
-    Alert.alert(
-      'Delete Group',
-      'Are you sure you want to delete this group?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            setDeviceGroups((prevGroups) => prevGroups.filter((group) => group.id !== groupId));
-          },
-        },
-      ]
-    );
+    setDeviceGroups((prevGroups) => prevGroups.filter(group => group.id !== groupId));
   };
 
   const getBatteryColor = (battery: string) => {
@@ -106,13 +95,26 @@ const DevicesScreen = () => {
     return <Ionicons name={validIcon} size={20} color="black" />;
   };
 
+  const handleGetUserID = async () => {
+    try {
+      const response = await getUserID(); // Assuming getUserID is a service function that returns user ID
+      if (response.isError) {
+        Alert.alert('Error', response.message);
+      } else {
+        setUserID(response.data.userID); // Assuming the user ID is in response.data.userID
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to get user ID');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Your devices</Text>
         <TouchableOpacity
           style={styles.addDeviceButton}
-          onPress={() => navigation.navigate('+Device')} // Navigate to the AddDevice tab
+          onPress={() => navigation.navigate('+Device')}
         >
           <Text style={styles.addDeviceButtonText}>+ Add device</Text>
         </TouchableOpacity>
@@ -144,10 +146,7 @@ const DevicesScreen = () => {
                     <Text style={styles.deviceName}>{device.name}</Text>
                     <View style={styles.batteryContainer}>
                       <Text
-                        style={[
-                          styles.batterySymbol,
-                          { color: getBatteryColor(device.battery) },
-                        ]}
+                        style={[styles.batterySymbol, { color: getBatteryColor(device.battery) }]}
                       >
                         ⚡
                       </Text>
@@ -179,13 +178,16 @@ const DevicesScreen = () => {
         </TouchableOpacity>
       )}
 
-      {/* Delete Group ID 3 Button */}
-      <TouchableOpacity
-        onPress={() => handleDeleteGroup(3)}
-        style={styles.deleteGroupButton}
-      >
-        <Text style={styles.deleteGroupButtonText}>Delete Group ID 3</Text>
+      {/* Button to get and display the user ID */}
+      <TouchableOpacity onPress={handleGetUserID} style={styles.getUserIDButton}>
+        <Text style={styles.getUserIDButtonText}>Get User ID</Text>
       </TouchableOpacity>
+
+      {userID && (
+        <View style={styles.userIDContainer}>
+          <Text>User ID: {userID}</Text>
+        </View>
+      )}
     </View>
   );
 };
