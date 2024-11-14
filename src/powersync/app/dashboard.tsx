@@ -6,12 +6,14 @@ import TotalConsumption from '../components/TotalConsumption';
 import AddDevice from "../components/AddDevice";
 import styles from '../styles/overviewPage'
 import { ScrollView } from 'react-native-gesture-handler';
+import { getData } from '@/storage/storage';
 
 const Dashboard: React.FC = () => { 
+
+  
   return (
     <View style={styles.app}>
       <Text style={styles.title}>Overview</Text>
-      
       <View style={styles.overviewContainer}>
         <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={10.43} kwh="kWh" />
         <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={1} />
