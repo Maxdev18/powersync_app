@@ -2,6 +2,8 @@ import { collection, addDoc, getDoc, query, where, getDocs, updateDoc, doc, dele
 import { db } from '../firebaseConfig';
 import { Device } from "@/Types/Device";
 import { Response } from "@/Types/Reponse";
+import { getData, storeData } from "@/storage/storage";
+import { Group } from "@/Types/Group";
 
 export class DeviceService {
   static async createDevice(data: Device): Promise<Response> {
@@ -267,27 +269,38 @@ export class DeviceService {
     }
   }
 
-  static async getDevicesByGroupID(id: string): Promise<Response> {
+  static async getDevicesByGroupIds(): Promise<Response> {
+    const groups: string[] = (await getData("groups")).map((group: Group) => group.id)
     try {
-      const collectionRef = collection(db, "device")
-      const deviceQuery = query(collectionRef, where('groupID', '==', id))
-      const querySnapshot = await getDocs(deviceQuery)
-
-      if(!querySnapshot.empty) {
-        const deviceDoc = querySnapshot.docs[0]
-        const deviceId = deviceDoc.id
-        const deviceData = deviceDoc.data()
-
-        const response: Response = {
-          message: "Device found",
-          data: {  ...deviceData, id: deviceId },
-          isError: false
-        }
+      const devices = []
+      
+      for(let i = 0; i < groups.length; i++) {
+        const collectionRef = collection(db, "device")
+        const deviceQuery = query(collectionRef, where('groupID', '==', groups[i]))
+        const querySnapshot = await getDocs(deviceQuery)
   
-        return response
-      } else {
-        return returnError("Device not found")
+        if(!querySnapshot.empty) {
+          for(let k = 0; k < querySnapshot.docs.length; k++) {
+            const deviceDoc = querySnapshot.docs[k]
+            const deviceId = deviceDoc.id
+            const deviceData = deviceDoc.data()
+  
+            devices.push({ ...deviceData, id: deviceId })
+          }
+        } else {
+          return returnError("Device not found")
+        }
       }
+
+      await storeData("devices", devices)
+
+      const response: Response = {
+        message: "Devices found",
+        data: {},
+        isError: false
+      }
+
+      return response
     } catch (e) {
       console.log("Unable to get device", e)
       return returnError("Unable to get device")
