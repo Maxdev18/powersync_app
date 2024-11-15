@@ -1,57 +1,69 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Alert, TextInput } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Alert, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { getUserID } from '../Services/UserService'; // Import your service to get the user ID
+import { UserService } from '@/Services/UserService';
+import { GroupService } from '@/Services/GroupService';
+import { DeviceService } from '@/Services/DeviceService';
 import styles from '../styles/device';
 
 interface Device {
-  id: number;
+  id: string;
   name: string;
-  battery: string;
+  batteryPercentage: number;
   icon: string;
+  groupID: string;
 }
 
 interface DeviceGroup {
-  id: number;
+  id: string;
   name: string;
   devices: Device[];
   isExpanded: boolean;
 }
+interface UserResponseData {
+  userId: string;
+}
 
 const DevicesScreen = () => {
   const navigation = useNavigation();
-
-  const [deviceGroups, setDeviceGroups] = useState<DeviceGroup[]>([
-    {
-      id: 1,
-      name: "Carl's devices",
-      devices: [
-        { id: 1, name: 'Garage flashlight', battery: '80%', icon: 'flashlight-outline' },
-        { id: 2, name: 'Powerbank', battery: '19%', icon: 'battery-charging-outline' },
-        { id: 3, name: 'Tablet', battery: '34%', icon: 'tablet-portrait-outline' },
-      ],
-      isExpanded: true,
-    },
-    {
-      id: 2,
-      name: "Max's devices",
-      devices: [],
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      name: "Tanner's devices",
-      devices: [],
-      isExpanded: false,
-    },
-  ]);
-
+  const [deviceGroups, setDeviceGroups] = useState<DeviceGroup[]>([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showInput, setShowInput] = useState(false);
-  const [userID, setUserID] = useState<string | null>(null); // State to store the user ID
+  const [userID, setUserID] = useState<string | null>(null);
 
-  const toggleGroupExpansion = (groupId: number) => {
+  useEffect(() => {
+    const fetchDeviceGroups = async () => {
+      try {
+        const response = await GroupService.getGroupsByUserFromStorage();
+        if (response.isError) {
+          Alert.alert('Error', response.message);
+        } else {
+          const groupsData = Array.isArray(response.data) ? response.data : [];
+          const groupIds = groupsData.map((group: any) => group.id);
+
+          const devicesResponse = await DeviceService.getDevicesByGroupIds(groupIds);
+          if (devicesResponse.isError) {
+            Alert.alert('Error', devicesResponse.message);
+          } else {
+            const devices = devicesResponse.data;
+            const groupsWithDevices = groupsData.map((group: any) => ({
+              ...group,
+              isExpanded: false,
+              devices: devices.filter((device: Device) => device.groupID === group.id),
+            }));
+            setDeviceGroups(groupsWithDevices);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching device groups:', error);
+      }
+    };
+
+    fetchDeviceGroups();
+  }, []);
+
+  const toggleGroupExpansion = (groupId: string) => {
     setDeviceGroups((prevGroups) =>
       prevGroups.map((group) =>
         group.id === groupId ? { ...group, isExpanded: !group.isExpanded } : group
@@ -62,7 +74,7 @@ const DevicesScreen = () => {
   const addDeviceGroup = () => {
     if (newGroupName.trim()) {
       const newGroup: DeviceGroup = {
-        id: deviceGroups.length + 1,
+        id: (deviceGroups.length + 1).toString(),
         name: newGroupName,
         devices: [],
         isExpanded: false,
@@ -75,14 +87,13 @@ const DevicesScreen = () => {
     }
   };
 
-  const handleDeleteGroup = (groupId: number) => {
+  const handleDeleteGroup = (groupId: string) => {
     setDeviceGroups((prevGroups) => prevGroups.filter(group => group.id !== groupId));
   };
 
-  const getBatteryColor = (battery: string) => {
-    const percentage = parseInt(battery.replace('%', ''));
-    if (percentage >= 80) return '#4CAF50';
-    if (percentage >= 30) return '#FFA726';
+  const getBatteryColor = (batteryPercentage: number) => {
+    if (batteryPercentage >= 80) return '#4CAF50';
+    if (batteryPercentage >= 30) return '#FFA726';
     return '#F44336';
   };
 
@@ -97,14 +108,21 @@ const DevicesScreen = () => {
 
   const handleGetUserID = async () => {
     try {
-      const response = await getUserID(); // Assuming getUserID is a service function that returns user ID
+      const response = await UserService.getUserID();
+
       if (response.isError) {
         Alert.alert('Error', response.message);
       } else {
-        setUserID(response.data.userID); // Assuming the user ID is in response.data.userID
+        const data = response.data as UserResponseData;
+        if (data.userId) {
+          setUserID(data.userId);
+          console.log("User ID:", data.userId);
+        } else {
+          Alert.alert('Error', 'User ID is not available.');
+        }
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to get user ID');
+      console.error('Error fetching user ID:', error);
     }
   };
 
@@ -138,23 +156,21 @@ const DevicesScreen = () => {
               </TouchableOpacity>
             </TouchableOpacity>
 
-            {group.isExpanded && (
-              <>
-                {group.devices.map((device) => (
-                  <View key={device.id} style={styles.deviceItem}>
-                    {renderIcon(device.icon)}
-                    <Text style={styles.deviceName}>{device.name}</Text>
-                    <View style={styles.batteryContainer}>
-                      <Text
-                        style={[styles.batterySymbol, { color: getBatteryColor(device.battery) }]}
-                      >
-                        ⚡
-                      </Text>
-                      <Text style={styles.deviceBattery}>{device.battery}</Text>
-                    </View>
+            {group.isExpanded && group.devices.length > 0 && (
+              group.devices.map((device) => (
+                <View key={device.id} style={styles.deviceItem}>
+                  {renderIcon(device.icon)}
+                  <Text style={styles.deviceName}>{device.name}</Text>
+                  <View style={styles.batteryContainer}>
+                    <Text
+                      style={[styles.batterySymbol, { color: getBatteryColor(device.batteryPercentage) }]}
+                    >
+                      ⚡
+                    </Text>
+                    <Text style={styles.deviceBattery}>{device.batteryPercentage}%</Text>
                   </View>
-                ))}
-              </>
+                </View>
+              ))
             )}
           </View>
         ))}
@@ -178,7 +194,6 @@ const DevicesScreen = () => {
         </TouchableOpacity>
       )}
 
-      {/* Button to get and display the user ID */}
       <TouchableOpacity onPress={handleGetUserID} style={styles.getUserIDButton}>
         <Text style={styles.getUserIDButtonText}>Get User ID</Text>
       </TouchableOpacity>
