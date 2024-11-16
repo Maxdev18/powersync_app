@@ -1,7 +1,10 @@
-import { collection, addDoc, query, where, getDocs, getDoc } from "firebase/firestore"; 
+import { collection, addDoc, query, where, getDocs, getDoc, updateDoc, doc } from "firebase/firestore"; 
 import { db } from '../firebaseConfig';
 import { User } from "@/Types/User";
 import { Response } from "@/Types/Reponse";
+import { storeData, updateKey } from "@/storage/storage";
+import { GroupService } from "./GroupService";
+import { DeviceService } from "./DeviceService";
 
 export class UserService {
   static async createUser(user: User): Promise<Response> {
@@ -21,6 +24,8 @@ export class UserService {
           data: { ...userData, id: userId, password: undefined },
           isError: false
         }
+
+        await storeData("user", { ...userData, id: userId, password: undefined })
 
         return response
       } else {
@@ -68,6 +73,10 @@ export class UserService {
             isError: false
           }
 
+          await storeData("user", { ...userData, id: userId, password: undefined })
+          await GroupService.getGroupsByUser(userId)
+          await DeviceService.getDevicesByGroupIds()
+
           return response
         }
       } else {
@@ -93,6 +102,7 @@ export class UserService {
   static async updateUser(user: User): Promise<Response> {
     try {
       const collectionRef = collection(db, "user")
+      const docRef = doc(db, "user", user.id as string);
       const userDocQuery = query(collectionRef, where('id', '==', user.id))
       const querySnapshot = await getDocs(userDocQuery)
 
@@ -101,6 +111,9 @@ export class UserService {
           message: "Updated profile",
           isError: false
         }
+
+        updateDoc(docRef, user)
+        await updateKey("user", { ...querySnapshot.docs[0].data(), id: querySnapshot.docs[0].id })
 
         return response
       } else {
@@ -122,4 +135,42 @@ export class UserService {
       return response
     }
   }
+  
+  static async getUserID(email: string): Promise<Response> {
+    try {
+      const collectionRef = collection(db, "user");
+      const userDocQuery = query(collectionRef, where('email', '==', email));
+      const querySnapshot = await getDocs(userDocQuery);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userId = userDoc.id;
+
+        const response: Response = {
+          message: "User found",
+          data: { userId },
+          isError: false,
+        };
+
+        return response;
+      } else {
+        const response: Response = {
+          message: "User not found",
+          isError: true,
+        };
+
+        return response;
+      }
+    } catch (e) {
+      console.error("Error fetching user ID: ", e);
+
+      const response: Response = {
+        message: "Error fetching user ID",
+        isError: true,
+      };
+
+      return response;
+    }
+  }
 }
+
