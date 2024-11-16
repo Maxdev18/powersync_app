@@ -1,30 +1,86 @@
-import { darkTheme, lightTheme } from "@/styles/theme";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { Picker } from '@react-native-picker/picker';
+import { DeviceService } from "@/Services/DeviceService"; // Import DeviceService
 import { Device } from "@/Types/Device";
+import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/updateDevice";
+import { db } from '../firebaseConfig';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 
 const EditDevice = () => {
-  const [deviceData, setDeviceData] = useState<Device>({
-    name: "iPhone 12",
-    type: "Phone", // Default option for the Picker
-    serialNumber: "SN123456789",
-    condition: "Great",
-    notes: "No issues, working perfectly.",
-    groupName: "Phones",
-    groupID: "",
-    cycles: 12,
-    batteryPercentage: 0,
-    wattage: 0,
-    estimatedLife: 0,
-    estimatedCost: 0,
-    location: {
-      longitude: 0,
-      latitude: 0
-    }
-  });
-
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string>('');
+  const [deviceData, setDeviceData] = useState<Partial<Device>>({});
+  const [groups, setGroups] = useState<{ id: string, name: string }[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<string>('');
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const [message, setMessage] = useState<string | null>(null); 
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      try {
+        const devicesCollection = await getDocs(collection(db, 'device'));
+        const devicesList = devicesCollection.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Device[];
+        setDevices(devicesList);
+      } catch (error) {
+        console.error("Error fetching devices: ", error);
+      }
+    };
+
+    const fetchGroups = async () => {
+      try {
+        const groupsCollection = await getDocs(collection(db, 'group'));
+        const groupsList = groupsCollection.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
+        setGroups(groupsList);
+      } catch (error) {
+        console.error("Error fetching groups: ", error);
+      }
+    };
+
+    fetchDevices();
+    fetchGroups();
+  }, []);
+
+  useEffect(() => {
+    const fetchDeviceDetails = async () => {
+      if (selectedDeviceId) {
+        try {
+          const deviceDoc = await getDoc(doc(db, 'device', selectedDeviceId));
+          if (deviceDoc.exists()) {
+            setDeviceData({ id: deviceDoc.id, ...deviceDoc.data() });
+            setSelectedGroupId(deviceDoc.data().groupID); // Set the initial group ID
+          } else {
+            console.log("No such document!");
+          }
+        } catch (error) {
+          console.error("Error fetching device details: ", error);
+        }
+      }
+    };
+
+    fetchDeviceDetails();
+  }, [selectedDeviceId]);
+
+  useEffect(() => {
+    if (selectedGroupId) {
+      const selectedGroup = groups.find(group => group.id === selectedGroupId);
+      if (selectedGroup) {
+        setDeviceData({
+          ...deviceData,
+          groupID: selectedGroup.id,
+          groupName: selectedGroup.name,
+        });
+      }
+    }
+  }, [selectedGroupId]);
 
   const handleChange = (name: keyof Device, value: string) => {
     setDeviceData({
@@ -33,27 +89,35 @@ const EditDevice = () => {
     });
   };
 
-  const handleSave = () => {
-    console.log("Updated Device Data:", deviceData);
+  const handleSave = async () => {
+    if (!deviceData.name || !deviceData.type || !deviceData.serialNumber || !deviceData.condition) { 
+      setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition."); 
+      setMessageType("error"); 
+      return;
+    }
+
+    try {
+      const response = await DeviceService.updateDevice(deviceData as Device);
+      if (!response.isError) {
+        setMessage("Device updated successfully!"); 
+        setMessageType("success");
+      } else {
+        setMessage("Failed to update device."); 
+        setMessageType("error");
+      }
+    } catch (error) {
+      console.error("Error updating device:", error); 
+      setMessage("An error occurred while updating the device."); 
+      setMessageType("error");
+    }
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const theme = isDarkMode ? darkTheme : lightTheme;
+  const theme = lightTheme;
   const styles = getStyles(theme);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton}>
-            <Text style={styles.backButtonText}>Go back to your devices</Text>
-          </TouchableOpacity>
-          <Button title={`Switch to ${isDarkMode ? "Light" : "Dark"} Mode`} onPress={toggleTheme} />
-        </View>
-
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: "https://home-gadgets-gizmos.com/cdn/shop/articles/Pngtree_gadgets_in_a_striking_3d_7276667.jpg?v=1724501861&width=533" }}
@@ -64,86 +128,82 @@ const EditDevice = () => {
         <View style={styles.formContainer}>
           <Text style={styles.title}>Edit Device</Text>
 
-          {/* Editable Fields */}
           <View style={styles.formGroup}>
             <Text style={styles.textColor}>Name</Text>
-            <TextInput
-              style={styles.input}
-              value={deviceData.name}
-              onChangeText={(value) => handleChange("name", value)}
-              placeholder="Enter device name"
-              placeholderTextColor={theme.textColor}
-            />
+            <Picker
+              selectedValue={selectedDeviceId}
+              onValueChange={(itemValue) => setSelectedDeviceId(itemValue)}
+              style={styles.picker}
+            >
+              {devices.map(device => (
+                <Picker.Item key={device.id} label={device.name} value={device.id} />
+              ))}
+            </Picker>
           </View>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Group</Text>
-            <TextInput
-              style={styles.input}
-              value={deviceData.groupName}
-              onChangeText={(value) => handleChange("groupName", value)}
-              placeholder="Enter group"
-              placeholderTextColor={theme.textColor}
-            />
-          </View>
+          {selectedDeviceId && (
+            <>
+              <View style={styles.formGroup}>
+                <Text style={styles.textColor}>Group</Text>
+                <Picker
+                  selectedValue={selectedGroupId}
+                  onValueChange={(itemValue) => setSelectedGroupId(itemValue)}
+                  style={styles.picker}
+                >
+                  {groups.map(group => (
+                    <Picker.Item key={group.id} label={group.name} value={group.id} />
+                  ))}
+                </Picker>
+              </View>
 
-          {/* Non-Editable Fields */}
-          <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Serial Number</Text>
-            <Text style={styles.nonEditableText}>{deviceData.serialNumber}</Text>
-          </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.textColor}>Serial Number</Text>
+                <Text style={styles.nonEditableText}>{deviceData.serialNumber}</Text>
+              </View>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Type</Text>
-            <Text style={styles.nonEditableText}>{deviceData.type}</Text>
-          </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.textColor}>Type</Text>
+                <Text style={styles.nonEditableText}>{deviceData.type}</Text>
+              </View>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Cycles</Text>
-            <Text style={styles.nonEditableText}>{deviceData.cycles}</Text>
-          </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.textColor}>Condition</Text>
+                <Picker
+                  selectedValue={deviceData.condition}
+                  style={styles.picker}
+                  onValueChange={(itemValue) => handleChange("condition", itemValue)}
+                >
+                  <Picker.Item label="" value="" />
+                  <Picker.Item label="Great" value="Great" />
+                  <Picker.Item label="Good" value="Good" />
+                  <Picker.Item label="Ok" value="Ok" />
+                  <Picker.Item label="Poor" value="Poor" />
+                  <Picker.Item label="Badly Damaged" value="Badly Damaged" />
+                </Picker>
+              </View>
 
-          {/* Editable Fields */}
-          <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Condition</Text>
-            <TextInput
-              style={styles.input}
-              value={deviceData.condition}
-              onChangeText={(value) => handleChange("condition", value)}
-              placeholder="Enter condition"
-              placeholderTextColor={theme.textColor}
-            />
-          </View>
+              <View style={styles.formGroup}>
+                <Text style={styles.textColor}>Notes</Text>
+                <TextInput
+                  style={styles.textarea}
+                  value={deviceData.notes || ''}
+                  onChangeText={(value) => handleChange("notes", value)}
+                  placeholder="Enter any notes"
+                  multiline={true}
+                  placeholderTextColor={theme.textColor}
+                />
+              </View>
 
-          <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Notes</Text>
-            <TextInput
-              style={styles.textarea}
-              value={deviceData.notes}
-              onChangeText={(value) => handleChange("notes", value)}
-              placeholder="Enter any notes"
-              multiline={true}
-              placeholderTextColor={theme.textColor}
-            />
-          </View>
-
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <Text style={styles.saveButtonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>Home</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>Devices</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>GPS</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerButton}>
-            <Text style={styles.footerButtonText}>Profile</Text>
-          </TouchableOpacity>
+              {message && ( 
+                <Text style={[styles.message, messageType === "error" ? styles.errorMessage : styles.successMessage]}> 
+                  {message} 
+                </Text>
+              )}
+              <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+                <Text style={styles.saveButtonText}>Save</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </ScrollView>

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import { DeviceService } from "@/Services/DeviceService"; // Import DeviceService
 import { Device } from "@/Types/Device";
 import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/addDevice";
+import { db } from '../firebaseConfig';
+import { collection, getDocs } from 'firebase/firestore';
 
 const AddDevice = () => {
   const [errorMessage, setErrorMessage] = useState<Response | void>()
@@ -27,10 +29,27 @@ const AddDevice = () => {
     }
   });
 
-
+  const [groups, setGroups] = useState<{ id: string, name: string }[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [message, setMessage] = useState<string | null>(null); // State variable for the message 
   const [messageType, setMessageType] = useState<"success" | "error" | null>(null); // State variable for message type
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const groupsCollection = await getDocs(collection(db, 'group'));
+        const groupsList = groupsCollection.docs.map(doc => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
+        setGroups(groupsList);
+      } catch (error) {
+        console.error("Error fetching groups: ", error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
 
   const handleChange = (name: keyof Device, value: string) => {
     setDeviceData({
@@ -40,17 +59,37 @@ const AddDevice = () => {
   };
 
   const handleSave = async () => {
-
     if (!deviceData.name || !deviceData.type || !deviceData.serialNumber || !deviceData.condition) { 
-        setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition."); setMessageType("error"); 
-        return;
-        }
+      setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition."); 
+      setMessageType("error"); 
+      return;
+    }
 
     try {
       const response = await DeviceService.createDevice(deviceData); // Call the service
       if (!response.isError) {
         setMessage("Device added successfully!"); 
         setMessageType("success");
+
+        // Reset fields to default values
+        setDeviceData({
+          name: "",
+          type: "",
+          serialNumber: "",
+          condition: "",
+          notes: "",
+          groupName: "",
+          groupID: "",
+          cycles: 0,
+          batteryPercentage: 0,
+          wattage: 0,
+          estimatedLife: 0,
+          estimatedCost: 0,
+          location: {
+            longitude: 0,
+            latitude: 0
+          }
+        });
       } else {
         setMessage("Failed to create device."); 
         setMessageType("error");
@@ -62,23 +101,12 @@ const AddDevice = () => {
     }
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const theme = isDarkMode ? darkTheme : lightTheme;
+  const theme = lightTheme;
   const styles = getStyles(theme);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton}>
-            <Text style={styles.backButtonText}>Go back to your devices</Text>
-          </TouchableOpacity>
-          <Button title={`Switch to ${isDarkMode ? "Light" : "Dark"} Mode`} onPress={toggleTheme} />
-        </View>
-
         <View style={styles.imageContainer}>
           <Image
             source={{ uri: "https://home-gadgets-gizmos.com/cdn/shop/articles/Pngtree_gadgets_in_a_striking_3d_7276667.jpg?v=1724501861&width=533" }}
@@ -108,13 +136,24 @@ const AddDevice = () => {
 
           <View style={styles.formGroup}>
             <Text style={styles.textColor}>Group</Text>
-            <TextInput
-              style={styles.input}
-              value={deviceData.groupName}
-              onChangeText={(value) => handleChange("groupName", value)}
-              placeholder="Enter group"
-              placeholderTextColor={theme.textColor}
-            />
+            <Picker
+              selectedValue={deviceData.groupID}
+              onValueChange={(itemValue) => {
+                const selectedGroup = groups.find(group => group.id === itemValue);
+                if (selectedGroup) {
+                  setDeviceData({
+                    ...deviceData,
+                    groupID: selectedGroup.id,
+                    groupName: selectedGroup.name,
+                  });
+                }
+              }}
+              style={styles.picker}
+            >
+              {groups.map(group => (
+                <Picker.Item key={group.id} label={group.name} value={group.id} />
+              ))}
+            </Picker>
           </View>
 
           <View style={styles.formGroup}>
@@ -143,22 +182,22 @@ const AddDevice = () => {
           </View>
 
           <View style={styles.formGroup}>
-              <Text style={styles.textColor}>Cycles</Text>
-                <TextInput
-                  keyboardType="numeric"
-                  style={styles.input}
-                  value={String(deviceData.cycles)}  // Convert to string
-                  onChangeText={(value) => handleChange("cycles", value)}
-                  placeholder="000"
-                  placeholderTextColor={theme.textColor}
-                  // editable={false}
-                />
+            <Text style={styles.textColor}>Cycles</Text>
+            <TextInput
+              keyboardType="numeric"
+              style={styles.input}
+              value={String(deviceData.cycles)}  // Convert to string
+              onChangeText={(value) => handleChange("cycles", value)}
+              placeholder="000"
+              placeholderTextColor={theme.textColor}
+              // editable={false}
+            />
           </View>
 
           <View style={styles.formGroup}>
             <Text style={styles.textColor}>Condition</Text>
             <Picker
-              selectedValue={deviceData.type}
+              selectedValue={deviceData.condition}
               style={styles.picker}
               onValueChange={(itemValue) => handleChange("condition", itemValue)}
             >
