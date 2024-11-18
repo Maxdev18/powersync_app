@@ -292,12 +292,13 @@ static async getDevicesByGroupIds(groupIds: string[]): Promise<Response> {
       }
     }
 
+    await storeData("devices", devices)
+
     return {
       message: "Devices found",
       data: devices,
       isError: false,
     };
-
   } catch (e) {
     console.log("Unable to get devices", e);
     return returnError("Unable to get devices");

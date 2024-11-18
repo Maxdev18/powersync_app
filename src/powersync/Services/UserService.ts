@@ -52,8 +52,8 @@ export class UserService {
           return { message: "Incorrect email or password", isError: true };
         } else {
           await storeData("user", { ...userData, id: userId, password: undefined });
-          await GroupService.getGroupsByUserFromStorage();
-          await DeviceService.getDevicesByGroupIds();
+          const groups = await GroupService.getGroupsByUserFromStorage();
+          await DeviceService.getDevicesByGroupIds(groups.data?.map((group: any) => group.id));
 
           return {
             message: "Authenticated",
