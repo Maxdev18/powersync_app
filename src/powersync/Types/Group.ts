@@ -1,6 +1,6 @@
 export type Group = {
     id?: string
     name: string
-    userID: string
+    userId: string
     numberOfDevices: number
 }

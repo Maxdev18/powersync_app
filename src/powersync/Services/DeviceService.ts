@@ -269,43 +269,42 @@ export class DeviceService {
     }
   }
 
-  static async getDevicesByGroupIds(): Promise<Response> {
-    const groups: string[] = (await getData("groups")).map((group: Group) => group.id)
-    try {
-      const devices = []
-      
-      for(let i = 0; i < groups.length; i++) {
-        const collectionRef = collection(db, "device")
-        const deviceQuery = query(collectionRef, where('groupID', '==', groups[i]))
-        const querySnapshot = await getDocs(deviceQuery)
-  
-        if(!querySnapshot.empty) {
-          for(let k = 0; k < querySnapshot.docs.length; k++) {
-            const deviceDoc = querySnapshot.docs[k]
-            const deviceId = deviceDoc.id
-            const deviceData = deviceDoc.data()
-  
-            devices.push({ ...deviceData, id: deviceId })
-          }
-        } else {
-          return returnError("Device not found")
+static async getDevicesByGroupIds(groupIds: string[]): Promise<Response> {
+  try {
+    const devices = [];
+
+    for (let i = 0; i < groupIds.length; i++) {
+      const collectionRef = collection(db, "device");
+      const deviceQuery = query(collectionRef, where("groupID", "==", groupIds[i]));
+      const querySnapshot = await getDocs(deviceQuery);
+
+      if (!querySnapshot.empty) {
+        for (let k = 0; k < querySnapshot.docs.length; k++) {
+          const deviceDoc = querySnapshot.docs[k];
+          const deviceId = deviceDoc.id;
+          const deviceData = deviceDoc.data();
+
+          devices.push({
+            ...deviceData,
+            id: deviceId,
+          });
         }
       }
-
-      await storeData("devices", devices)
-
-      const response: Response = {
-        message: "Devices found",
-        data: {},
-        isError: false
-      }
-
-      return response
-    } catch (e) {
-      console.log("Unable to get device", e)
-      return returnError("Unable to get device")
     }
+
+    await storeData("devices", devices)
+
+    return {
+      message: "Devices found",
+      data: devices,
+      isError: false,
+    };
+  } catch (e) {
+    console.log("Unable to get devices", e);
+    return returnError("Unable to get devices");
   }
+}
+
 }
 
 async function queryDeviceRef(id: string) {
