@@ -1,14 +1,4 @@
 
-//       // <View>
-//     //   <Text style={styles.subTitle}>Power Usage</Text>
-//     //   <View style={styles.powerChart}>
-//     //   {devices.map((device, index) => (
-//     //       <Text key={index}>
-//     //         {device.name}: {device.wattage} <br/>
-//     //       </Text>
-//     //     ))}
-//     //   </View>
-//     // </View>
 
 import React from 'react';
 import { View, Text, Dimensions } from 'react-native';
@@ -27,8 +17,8 @@ interface PowerUsageProps {
 }
 
 const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
-  // Sort devices by wattage in descending order
-  const sortedDevices = [...devices].sort((a, b) => b.wattage - a.wattage);
+  // Sort devices by wattage in descending order and show three top devices
+  const sortedDevices = [...devices].sort((a, b) => b.wattage - a.wattage).slice(0, 3);
 
   // Extract labels and data for the chart
   const labels = sortedDevices.map((device) => device.name);
