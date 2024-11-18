@@ -12,6 +12,8 @@ export class GroupService {
       const docRef = await addDoc(collection(db, "group"), group);
       const groupId = docRef.id;
 
+      await this.getGroupsByUserFromStorage()
+
       return {
         message: "Group created successfully",
         data: { ...group, id: groupId },

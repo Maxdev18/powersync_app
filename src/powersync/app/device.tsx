@@ -6,6 +6,8 @@ import { UserService } from '@/Services/UserService';
 import { GroupService } from '@/Services/GroupService';
 import { DeviceService } from '@/Services/DeviceService';
 import styles from '../styles/device';
+import { Group } from '@/Types/Group';
+import { getData } from '@/storage/storage';
 
 interface Device {
   id: string;
@@ -21,16 +23,12 @@ interface DeviceGroup {
   devices: Device[];
   isExpanded: boolean;
 }
-interface UserResponseData {
-  userId: string;
-}
 
 const DevicesScreen = () => {
   const navigation = useNavigation();
   const [deviceGroups, setDeviceGroups] = useState<DeviceGroup[]>([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showInput, setShowInput] = useState(false);
-  const [userID, setUserID] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDeviceGroups = async () => {
@@ -50,7 +48,7 @@ const DevicesScreen = () => {
             const groupsWithDevices = groupsData.map((group: any) => ({
               ...group,
               isExpanded: false,
-              devices: devices.filter((device: Device) => device.groupID === group.id),
+              devices: devices?.filter((device: Device) => device.groupID === group.id),
             }));
             setDeviceGroups(groupsWithDevices);
           }
@@ -71,7 +69,7 @@ const DevicesScreen = () => {
     );
   };
 
-  const addDeviceGroup = () => {
+  const addDeviceGroup = async () => {
     if (newGroupName.trim()) {
       const newGroup: DeviceGroup = {
         id: (deviceGroups.length + 1).toString(),
@@ -79,6 +77,14 @@ const DevicesScreen = () => {
         devices: [],
         isExpanded: false,
       };
+
+      const group: Group = {
+        name: newGroupName,
+        numberOfDevices: 0,
+        userId: (await getData("user")).id
+      }
+
+      await GroupService.createGroup(group)
       setDeviceGroups((prevGroups) => [...prevGroups, newGroup]);
       setShowInput(false);
       setNewGroupName('');
@@ -104,26 +110,6 @@ const DevicesScreen = () => {
   const renderIcon = (icon: string) => {
     const validIcon = isValidIcon(icon) ? icon : 'help-circle-outline';
     return <Ionicons name={validIcon} size={20} color="black" />;
-  };
-
-  const handleGetUserID = async () => {
-    try {
-      const response = await UserService.getUserID();
-
-      if (response.isError) {
-        Alert.alert('Error', response.message);
-      } else {
-        const data = response.data as UserResponseData;
-        if (data.userId) {
-          setUserID(data.userId);
-          console.log("User ID:", data.userId);
-        } else {
-          Alert.alert('Error', 'User ID is not available.');
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching user ID:', error);
-    }
   };
 
   return (
@@ -192,16 +178,6 @@ const DevicesScreen = () => {
         <TouchableOpacity onPress={() => setShowInput(true)} style={styles.addGroupButton}>
           <Text style={styles.addGroupButtonText}>+ Add Group</Text>
         </TouchableOpacity>
-      )}
-
-      <TouchableOpacity onPress={handleGetUserID} style={styles.getUserIDButton}>
-        <Text style={styles.getUserIDButtonText}>Get User ID</Text>
-      </TouchableOpacity>
-
-      {userID && (
-        <View style={styles.userIDContainer}>
-          <Text>User ID: {userID}</Text>
-        </View>
       )}
     </View>
   );
