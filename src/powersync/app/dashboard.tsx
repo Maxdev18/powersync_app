@@ -16,9 +16,10 @@ interface Device {
   batteryPercentage: number;
   estimatedCost: number;
 }
+
 //TODO: modify the countTotalConsumption to be the total consumption for the week
 //TODO: modify the countTotalCost to be the total cost for the week
-//TODO: find a way to get the data and add the chart
+//TODO: find a way to get the data and add the chart (in progress)
 
 const Dashboard: React.FC = () => { 
   const [devices, setDevices] = useState<Device[]>([]);
@@ -36,7 +37,7 @@ const Dashboard: React.FC = () => {
     }
   };
 
-    const sortedDevices = [...devices].sort((a, b) => b.wattage - a.wattage); //might not work
+    const sortedDevices = [...devices].sort((a, b) => b.wattage - a.wattage); //devices in descending order based on wattage
 
     const countLowBatteryDevices = () => { //simply filter out devices 
       const count = devices.filter(device => device.batteryPercentage < 25).length;
@@ -64,16 +65,16 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <View style={styles.app}>
+    <ScrollView style={styles.app}>
       <Text style={styles.title}>Overview</Text>
       <View style={styles.overviewContainer}>
         <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={10.43} kwh="kWh" />
         <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={lowDevices} />
         <OverviewCard iconName="cash-outline" iconColor="green" name="Estimated cost" num={estimatedCost} />
       </View>
-      {/* this will display the chart of the week */}
-      <PowerUsage/>
-      {/* this will show the total consumption for the week */}
+
+      <PowerUsage devices={devices} /> 
+
       <TotalConsumption iconName="flash-outline" iconColor="blue" power={totalConsumption}/>
 
       <View>
@@ -83,11 +84,11 @@ const Dashboard: React.FC = () => {
         {sortedDevices.map((device, index) => ( //map out all devices in descending order
           <AddDevice key={index} icon="📱" name={device.name} power={device.wattage} />
         ))}
-        
+ 
       </ScrollView>
     </View>
 
-    </View>
+    </ScrollView>
   );
 };
 

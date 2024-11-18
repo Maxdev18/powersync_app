@@ -123,4 +123,7 @@ export const getStyles = (theme: any) =>
       footerButtonText: {
         color: theme.footerTextColor,
       },
+      message: { textAlign: "center", marginBottom: 10, fontSize: 16, }, 
+      errorMessage: { color: '#FF6464', }, 
+      successMessage: { color: '#4CAF50', },
     });
