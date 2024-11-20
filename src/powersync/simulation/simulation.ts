@@ -29,7 +29,7 @@ async function generateRandomDeviceData(): Promise<void> {
     device.cycles = Math.ceil(Math.random() * 500)
     device.wattage = Number((Math.random() * 10).toFixed(2))
     device.estimatedCost = Number((device.wattage * .18).toFixed(2))
-    device.estimatedLife = Number((device.wattage * 1000).toFixed(2))
+    device.estimatedLife = Number((Math.random() * 1000).toFixed(2))
 
     await DeviceService.updateDevice(device)
     updatedDevices.push(device)
