@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
-import { DeviceService } from "@/Services/DeviceService"; // Import DeviceService
+import { DeviceService } from "@/Services/DeviceService";
 import { Device } from "@/Types/Device";
 import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/updateDevice";
 import { db } from '../firebaseConfig';
-import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
+import { getData } from "@/storage/storage"; // Fetch user data from storage
+import { collection, getDocs, doc, getDoc, query, where } from 'firebase/firestore';
 
 const EditDevice = () => {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -15,7 +16,7 @@ const EditDevice = () => {
   const [groups, setGroups] = useState<{ id: string, name: string }[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string>('');
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [message, setMessage] = useState<string | null>(null); 
+  const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
 
   useEffect(() => {
@@ -34,14 +35,29 @@ const EditDevice = () => {
 
     const fetchGroups = async () => {
       try {
-        const groupsCollection = await getDocs(collection(db, 'group'));
-        const groupsList = groupsCollection.docs.map(doc => ({
+        const user = await getData("user"); // Retrieve logged-in user data
+        if (!user?.id) {
+          setMessage("User not logged in.");
+          setMessageType("error");
+          return;
+        }
+
+        // Query groups where userId matches the logged-in user's ID
+        const groupsQuery = query(
+          collection(db, "group"),
+          where("userId", "==", user.id)
+        );
+
+        const groupsCollection = await getDocs(groupsQuery);
+        const groupsList = groupsCollection.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name,
         }));
         setGroups(groupsList);
       } catch (error) {
         console.error("Error fetching groups: ", error);
+        setMessage("Error fetching groups.");
+        setMessageType("error");
       }
     };
 
@@ -90,24 +106,30 @@ const EditDevice = () => {
   };
 
   const handleSave = async () => {
-    if (!deviceData.name || !deviceData.type || !deviceData.serialNumber || !deviceData.condition) { 
-      setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition."); 
-      setMessageType("error"); 
+    if (!selectedDeviceId) {
+      setMessage("Please select a device.");
+      setMessageType("error");
+      return;
+    }
+
+    if (!deviceData.name || !deviceData.type || !deviceData.serialNumber || !deviceData.condition) {
+      setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition.");
+      setMessageType("error");
       return;
     }
 
     try {
       const response = await DeviceService.updateDevice(deviceData as Device);
       if (!response.isError) {
-        setMessage("Device updated successfully!"); 
+        setMessage("Device updated successfully!");
         setMessageType("success");
       } else {
-        setMessage("Failed to update device."); 
+        setMessage("Failed to update device.");
         setMessageType("error");
       }
     } catch (error) {
-      console.error("Error updating device:", error); 
-      setMessage("An error occurred while updating the device."); 
+      console.error("Error updating device:", error);
+      setMessage("An error occurred while updating the device.");
       setMessageType("error");
     }
   };
@@ -135,6 +157,8 @@ const EditDevice = () => {
               onValueChange={(itemValue) => setSelectedDeviceId(itemValue)}
               style={styles.picker}
             >
+              {/* Set an empty value with the placeholder label */}
+              <Picker.Item label="Select device" value="" enabled={false} />
               {devices.map(device => (
                 <Picker.Item key={device.id} label={device.name} value={device.id} />
               ))}
@@ -194,9 +218,9 @@ const EditDevice = () => {
                 />
               </View>
 
-              {message && ( 
-                <Text style={[styles.message, messageType === "error" ? styles.errorMessage : styles.successMessage]}> 
-                  {message} 
+              {message && (
+                <Text style={[styles.message, messageType === "error" ? styles.errorMessage : styles.successMessage]}>
+                  {message}
                 </Text>
               )}
               <TouchableOpacity style={styles.saveButton} onPress={handleSave}>

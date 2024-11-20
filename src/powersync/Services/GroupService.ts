@@ -29,7 +29,6 @@ export class GroupService {
     }
   }
 
-  // Fetch groups for a specific user from Firestore
  // Fetch groups for a specific user from Firestore
  static async getGroupsByUserFromStorage(): Promise<Response> {
   try {

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
-import { Picker } from '@react-native-picker/picker';
-import { DeviceService } from "@/Services/DeviceService"; // Import DeviceService
+import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { DeviceService } from "@/Services/DeviceService";
+import { getData } from "@/storage/storage"; // Fetch user data from storage
+import { db } from "../firebaseConfig";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { Device } from "@/Types/Device";
 import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/addDevice";
-import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
 
 const AddDevice = () => {
   const [errorMessage, setErrorMessage] = useState<Response | void>()
@@ -37,14 +38,29 @@ const AddDevice = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
-        const groupsCollection = await getDocs(collection(db, 'group'));
-        const groupsList = groupsCollection.docs.map(doc => ({
+        const user = await getData("user"); // Get the logged-in user data
+        if (!user?.id) {
+          setMessage("User not logged in.");
+          setMessageType("error");
+          return;
+        }
+
+        // Query groups where userId matches the logged-in user's ID
+        const groupsQuery = query(
+          collection(db, "group"),
+          where("userId", "==", user.id)
+        );
+
+        const groupsCollection = await getDocs(groupsQuery);
+        const groupsList = groupsCollection.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name,
         }));
         setGroups(groupsList);
       } catch (error) {
         console.error("Error fetching groups: ", error);
+        setMessage("Error fetching groups.");
+        setMessageType("error");
       }
     };
 
