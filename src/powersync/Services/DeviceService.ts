@@ -2,7 +2,7 @@ import { collection, addDoc, getDoc, query, where, getDocs, updateDoc, doc, dele
 import { db } from '../firebaseConfig';
 import { Device } from "@/Types/Device";
 import { Response } from "@/Types/Reponse";
-import { getData, storeData } from "@/storage/storage";
+import { getData, storeData, updateKey } from "@/storage/storage";
 
 export class DeviceService {
   static async createDevice(data: Device): Promise<Response> {
@@ -81,7 +81,6 @@ export class DeviceService {
   }
 
   static async updateDevice(device: Device): Promise<Response> {
-    console.log(device)
     try {
       const deviceRef = await queryDeviceRef(device.id as string)
       const deviceDoc = await getDoc(deviceRef)

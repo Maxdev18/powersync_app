@@ -2,6 +2,7 @@
 // updates the database to simulate the devices
 
 import { DeviceService } from "@/Services/DeviceService"
+import { updateKey } from "@/storage/storage"
 import { Device } from "@/Types/Device"
 import { Response } from "@/Types/Reponse"
 
@@ -34,5 +35,6 @@ async function generateRandomDeviceData(): Promise<void> {
     updatedDevices.push(device)
   }
 
-  console.log(updatedDevices)
+  const dbDevices = await DeviceService.getDevices()
+  await updateKey("devices", dbDevices.data)
 }
