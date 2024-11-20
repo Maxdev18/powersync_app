@@ -1,14 +1,19 @@
 // AppNavigator.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../app/index';
 import RegistrationScreen from '../app/register';
 import MainTabs from '../app/MainTabs';
+import { startDeviceSimulation } from '@/simulation/simulation';
 
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    startDeviceSimulation()
+  }, [])
 
   const handleAuthenticationSuccess = () => {
     setIsLoggedIn(true);
