@@ -72,17 +72,15 @@ export class UserService {
 
   static async updateUser(user: User): Promise<Response> {
     try {
-      const collectionRef = collection(db, "user");
       const docRef = doc(db, "user", user.id as string);
-      const userDocQuery = query(collectionRef, where("id", "==", user.id));
-      const querySnapshot = await getDocs(userDocQuery);
-
-      if (!querySnapshot.empty) {
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) { //means user exists
         await updateDoc(docRef, user);
-        await updateKey("user", { ...querySnapshot.docs[0].data(), id: querySnapshot.docs[0].id });
+        await updateKey("user", { ...docSnap.data(), id: docSnap.id });
 
-        return { message: "Updated profile", isError: false };
+        return { message: "Updated profile!", isError: false };
       } else {
+        console.log("User doesn't exist: ", user.id);
         return { message: "User doesn't exist", isError: true };
       }
     } catch (e) {
@@ -90,6 +88,7 @@ export class UserService {
       return { message: "Error updating user", isError: true };
     }
   }
+  
 
   static async getUserID(): Promise<Response> {
     try {
