@@ -2,9 +2,11 @@
 // updates the database to simulate the devices
 
 import { DeviceService } from "@/Services/DeviceService"
-import { updateKey } from "@/storage/storage"
+import { GroupService } from "@/Services/GroupService"
+import { storeData } from "@/storage/storage"
 import { Device } from "@/Types/Device"
 import { Response } from "@/Types/Reponse"
+import { Alert } from "react-native"
 
 // are being updated in real time.
 export const startDeviceSimulation = (): void => {
@@ -18,7 +20,6 @@ export const startDeviceSimulation = (): void => {
 
 async function generateRandomDeviceData(): Promise<void> {
   const devices: Response = await DeviceService.getDevices()
-  console.log(devices.data)
   const updatedDevices: Device[] = []
 
   for(let i = 0; i < devices.data.length; i++) {
@@ -35,6 +36,15 @@ async function generateRandomDeviceData(): Promise<void> {
     updatedDevices.push(device)
   }
 
-  const dbDevices = await DeviceService.getDevices()
-  await updateKey("devices", dbDevices.data)
+  const response = await GroupService.getGroupsByUserFromStorage();
+
+  if (response.isError) {
+    Alert.alert('Error', response.message);
+  } else {
+    const groupsData = Array.isArray(response.data) ? response.data : [];
+    const groupIds = groupsData.map((group: any) => group.id);
+
+    const dbDevices = await DeviceService.getDevicesByGroupIds(groupIds)
+    await storeData("devices", [...dbDevices.data])
+  }
 }
