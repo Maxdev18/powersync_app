@@ -10,7 +10,7 @@ import { darkTheme, lightTheme } from "@/styles/theme";
 import { getStyles } from "@/styles/addDevice";
 
 const AddDevice = () => {
-  const [errorMessage, setErrorMessage] = useState<Response | void>()
+  const [errorMessage, setErrorMessage] = useState<Response | void>();
   const [deviceData, setDeviceData] = useState<Device>({
     name: "",
     type: "",
@@ -18,7 +18,7 @@ const AddDevice = () => {
     condition: "",
     notes: "",
     groupName: "",
-    groupID: "",
+    groupID: "", // Ensure groupID starts as an empty string
     cycles: 0,
     batteryPercentage: 0,
     wattage: 0,
@@ -56,7 +56,17 @@ const AddDevice = () => {
           id: doc.id,
           name: doc.data().name,
         }));
+        console.log("Fetched Groups:", groupsList); // Debugging line
         setGroups(groupsList);
+
+        // If there is at least one group, set the groupID to the first one
+        if (groupsList.length > 0) {
+          setDeviceData((prevData) => ({
+            ...prevData,
+            groupID: groupsList[0].id, // Set the default selected groupID
+            groupName: groupsList[0].name,
+          }));
+        }
       } catch (error) {
         console.error("Error fetching groups: ", error);
         setMessage("Error fetching groups.");
@@ -75,6 +85,16 @@ const AddDevice = () => {
   };
 
   const handleSave = async () => {
+    // Debug: Check the groupID before submitting
+    console.log("Group ID selected:", deviceData.groupID);
+
+    // Ensure groupID is correctly set
+    if (!deviceData.groupID) {
+      setMessage("Please select a group.");
+      setMessageType("error");
+      return;
+    }
+
     if (!deviceData.name || !deviceData.type || !deviceData.serialNumber || !deviceData.condition) { 
       setMessage("Please fill in all required fields: Name, Type, Serial Number, and Condition."); 
       setMessageType("error"); 
@@ -95,7 +115,7 @@ const AddDevice = () => {
           condition: "",
           notes: "",
           groupName: "",
-          groupID: "",
+          groupID: "", // Reset groupID here
           cycles: 0,
           batteryPercentage: 0,
           wattage: 0,
@@ -155,13 +175,14 @@ const AddDevice = () => {
             <Picker
               selectedValue={deviceData.groupID}
               onValueChange={(itemValue) => {
+                console.log("Selected group ID:", itemValue); // Log the group ID
                 const selectedGroup = groups.find(group => group.id === itemValue);
                 if (selectedGroup) {
-                  setDeviceData({
-                    ...deviceData,
+                  setDeviceData((prevData) => ({
+                    ...prevData,
                     groupID: selectedGroup.id,
                     groupName: selectedGroup.name,
-                  });
+                  }));
                 }
               }}
               style={styles.picker}
@@ -206,7 +227,6 @@ const AddDevice = () => {
               onChangeText={(value) => handleChange("cycles", value)}
               placeholder="000"
               placeholderTextColor={theme.textColor}
-              // editable={false}
             />
           </View>
 
@@ -217,12 +237,10 @@ const AddDevice = () => {
               style={styles.picker}
               onValueChange={(itemValue) => handleChange("condition", itemValue)}
             >
-              <Picker.Item label="" value="" />
-              <Picker.Item label="Great" value="Great" />
+              <Picker.Item label="New" value="New" />
               <Picker.Item label="Good" value="Good" />
-              <Picker.Item label="Ok" value="Ok" />
-              <Picker.Item label="Poor" value="Poor" />
-              <Picker.Item label="Badly Damaged" value="Badly Damaged" />
+              <Picker.Item label="Worn" value="Worn" />
+              <Picker.Item label="Damaged" value="Damaged" />
             </Picker>
           </View>
 
@@ -238,11 +256,12 @@ const AddDevice = () => {
             />
           </View>
           
-          {message && ( 
-          <Text style={[styles.message, messageType === "error" ? styles.errorMessage : styles.successMessage]}> 
-              {message} 
-          </Text>
+          {message && (
+            <Text style={[styles.message, messageType === "error" ? styles.errorMessage : styles.successMessage]}>
+              {message}
+            </Text>
           )}
+          
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <Text style={styles.saveButtonText}>Save</Text>
           </TouchableOpacity>

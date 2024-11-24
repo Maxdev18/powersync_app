@@ -20,20 +20,7 @@ const EditDevice = () => {
   const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
 
   useEffect(() => {
-    const fetchDevices = async () => {
-      try {
-        const devicesCollection = await getDocs(collection(db, 'device'));
-        const devicesList = devicesCollection.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Device[];
-        setDevices(devicesList);
-      } catch (error) {
-        console.error("Error fetching devices: ", error);
-      }
-    };
-
-    const fetchGroups = async () => {
+    const fetchGroupsAndDevices = async () => {
       try {
         const user = await getData("user"); // Retrieve logged-in user data
         if (!user?.id) {
@@ -42,27 +29,40 @@ const EditDevice = () => {
           return;
         }
 
-        // Query groups where userId matches the logged-in user's ID
+        // Fetch groups first
         const groupsQuery = query(
           collection(db, "group"),
           where("userId", "==", user.id)
         );
-
         const groupsCollection = await getDocs(groupsQuery);
         const groupsList = groupsCollection.docs.map((doc) => ({
           id: doc.id,
           name: doc.data().name,
         }));
+
         setGroups(groupsList);
+
+        // After groups are fetched, fetch devices
+        const devicesCollection = await getDocs(collection(db, 'device'));
+        const devicesList = devicesCollection.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Device[];
+
+        // Filter devices to only show those belonging to the user's groups
+        const filteredDevices = devicesList.filter(device =>
+          groupsList.some(group => group.id === device.groupID)
+        );
+
+        setDevices(filteredDevices);
       } catch (error) {
-        console.error("Error fetching groups: ", error);
-        setMessage("Error fetching groups.");
+        console.error("Error fetching data: ", error);
+        setMessage("Error fetching data.");
         setMessageType("error");
       }
     };
 
-    fetchDevices();
-    fetchGroups();
+    fetchGroupsAndDevices();
   }, []);
 
   useEffect(() => {
@@ -119,7 +119,13 @@ const EditDevice = () => {
     }
 
     try {
-      const response = await DeviceService.updateDevice(deviceData as Device);
+      // Include the selectedGroupId as the groupID in the device data
+      const updatedDeviceData = {
+        ...deviceData,
+        groupID: selectedGroupId,
+      };
+
+      const response = await DeviceService.updateDevice(updatedDeviceData as Device);
       if (!response.isError) {
         setMessage("Device updated successfully!");
         setMessageType("success");
@@ -151,13 +157,12 @@ const EditDevice = () => {
           <Text style={styles.title}>Edit Device</Text>
 
           <View style={styles.formGroup}>
-            <Text style={styles.textColor}>Name</Text>
+            <Text style={styles.textColor}>Device</Text>
             <Picker
               selectedValue={selectedDeviceId}
               onValueChange={(itemValue) => setSelectedDeviceId(itemValue)}
               style={styles.picker}
             >
-              {/* Set an empty value with the placeholder label */}
               <Picker.Item label="Select device" value="" enabled={false} />
               {devices.map(device => (
                 <Picker.Item key={device.id} label={device.name} value={device.id} />
