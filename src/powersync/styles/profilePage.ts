@@ -6,15 +6,6 @@ export default StyleSheet.create({
     backgroundColor: '#edfaff',
   },
 
-  darkBackground: {
-    backgroundColor: '#2c2c2c',
-    color: 'white',
-  },
-
-  // darkModeInput: {
-  //   backgroundColor: '#2c2c2c',
-  //   color: 'white',
-  // },
   profileIconBackground: {
     height: 120,
     backgroundColor: '#58b4ff',
@@ -25,7 +16,6 @@ export default StyleSheet.create({
   header: {
     fontSize: 26,
     fontWeight: 'bold',
-    // padding: 12 10 0 10,  
     paddingLeft: 12,
     paddingTop: 12, 
   },

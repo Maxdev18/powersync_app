@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Dashboard from './dashboard';
@@ -7,12 +7,30 @@ import GPS from './gps';
 import Profile from './profile';
 import Device from './device';
 import UpdateDevice from './updateDevice';
+import { EventRegister } from 'react-native-event-listeners'
+import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
+import theme from '../theme/theme';
+import themeContext from '../theme/themeContext';
 
 const Tab = createBottomTabNavigator();
 
 function AppNavigator() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    const listener = EventRegister.addEventListener('changeTheme', (data) => {
+      setDarkMode(data);
+    });
+    return () => {
+      EventRegister.removeEventListener(listener as string);
+    };
+  }, [darkMode]);
+
+
   return (
-    <Tab.Navigator
+    <themeContext.Provider value = {darkMode ? theme.dark : theme.light}>
+      {/* <NavigationContainer theme = {darkMode ? DarkTheme : DefaultTheme}> */}
+    <Tab.Navigator theme = {darkMode ? DarkTheme : DefaultTheme}
       screenOptions={{
         tabBarStyle: { backgroundColor: '#313131' }, // Change background color here
         tabBarActiveTintColor: '#ffffff', // Active icon color
@@ -83,6 +101,8 @@ function AppNavigator() {
       />
       {/* Add more screens with icons as needed */}
     </Tab.Navigator>
+    {/* </NavigationContainer> */}
+    </themeContext.Provider>
   );
 }
 
