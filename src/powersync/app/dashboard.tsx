@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
     <ScrollView style={styles.app}>
       <Text style={styles.title}>Overview</Text>
       <View style={styles.overviewContainer}>
-        <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={dailyConsumption} kwh="kWh" />
+        <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={dailyConsumption.toFixed(2)} kwh="kWh" />
         <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={lowDevices} />
         <OverviewCard iconName="cash-outline" iconColor="green" name="Estimated cost" num={estimatedCost} />
       </View>
