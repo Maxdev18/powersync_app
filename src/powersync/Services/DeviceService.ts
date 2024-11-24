@@ -2,8 +2,7 @@ import { collection, addDoc, getDoc, query, where, getDocs, updateDoc, doc, dele
 import { db } from '../firebaseConfig';
 import { Device } from "@/Types/Device";
 import { Response } from "@/Types/Reponse";
-import { getData, storeData } from "@/storage/storage";
-import { Group } from "@/Types/Group";
+import { getData, storeData, updateKey } from "@/storage/storage";
 
 export class DeviceService {
   static async createDevice(data: Device): Promise<Response> {
@@ -49,6 +48,35 @@ export class DeviceService {
       console.log("Unable to get device", e)
 
       return returnError("Unable to get device")
+    }
+  }
+
+  static async getDevices(): Promise<Response> {
+    try {
+      // Reference the 'device' collection
+      const deviceRef = collection(db, 'device');
+
+      // Fetch all documents in the 'device' collection
+      const deviceDocs = await getDocs(deviceRef);
+      const devices: Device[] = [];
+
+      // Iterate through each document
+      deviceDocs.forEach((deviceDoc) => {
+        devices.push({ id: deviceDoc.id, ...deviceDoc.data() as Device });
+      });
+  
+      if (devices.length > 0) {
+        return {
+          message: 'Devices retrieved successfully',
+          data: devices,
+          isError: false,
+        };
+      } else {
+        return returnError('No devices found');
+      }
+    } catch (e) {
+      console.error('Unable to get devices:', e);
+      return returnError('Unable to get devices');
     }
   }
 
