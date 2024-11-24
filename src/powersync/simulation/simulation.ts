@@ -10,10 +10,10 @@ import { Response } from "@/Types/Reponse"
 export const startDeviceSimulation = (): void => {
   const interval = 10000
 
-  setInterval(async () => {
-    // 1. Call random generation function
-    generateRandomDeviceData()
-  }, interval)
+  // setInterval(async () => {
+  //   // 1. Call random generation function
+  //   generateRandomDeviceData()
+  // }, interval)
 }
 
 async function generateRandomDeviceData(): Promise<void> {

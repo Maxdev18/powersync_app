@@ -26,7 +26,7 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
 
   return (
     <View>
-      <Text style={styles.subTitle}>Power Usage</Text>
+      {/* <Text style={[styles.subTitle, {color:themeColor}]}>Power Usage</Text> */}
 
       <BarChart
         data={{
