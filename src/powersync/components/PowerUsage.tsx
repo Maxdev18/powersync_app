@@ -34,6 +34,7 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
           datasets: [
             {
               data: data,
+              
             },
           ],
         }}
@@ -46,8 +47,8 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
           backgroundGradientFrom: '#FFFFFF',
           backgroundGradientTo: '#FFFFFF',
           decimalPlaces: 0,
-          color: () => `rgba(0, 0, 0, 1)`,
-          labelColor: () => `rgba(0, 0, 0, 0.6)`,
+          color: () => `rgba(0, 0, 0, 3)`,
+          // labelColor: () => `black`,
           propsForBackgroundLines: {
             strokeDasharray: '', // solid background lines
             stroke: '#E0E0E0',

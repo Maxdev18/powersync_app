@@ -74,7 +74,7 @@ const Profile: React.FC = () => {
         </View>
 
         <View style={[styles.inputBox,{backgroundColor:theme.theme === 'light' ? '#ffffff' : '#333333'}, {borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff'}]}> 
-        <Text style={[{color: theme.color}]}>Last name</Text>
+        <Text style={{color: theme.color}}>Last name</Text>
           <TextInput style={[styles.input, {color: theme.color}]} value= {userData.lastName} onChange={() => onDataChange('lastName',event)} />
         </View>
 
@@ -91,13 +91,13 @@ const Profile: React.FC = () => {
       </View>
 
       <TouchableOpacity> 
-      <Text style={[styles.para, {color: theme.color}]}>Change your password</Text> 
+      <Text style={[styles.para]}>Change your password</Text> 
       </TouchableOpacity>
 
-      <View style={styles.darkModeToggle}>
+      <View style={[styles.darkModeToggle,{backgroundColor:theme.theme === 'light' ? '#ffffff' : '#333333'}, {borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff'}]}>
         <View style={styles.darkModeTextContainer}>
-          <Text style={styles.darkModeText}>Dark mode</Text>
-          <Text>Change your light setting between <br/> light and dark mode</Text>
+          <Text style={[styles.darkModeText,{color: theme.color}]}>Dark mode</Text>
+          <Text style={{color: theme.color}}>Change your light setting between <br/> light and dark mode</Text>
         </View>
         <Switch value={darkMode} onValueChange={(value) => {
           setDarkMode(value); 
