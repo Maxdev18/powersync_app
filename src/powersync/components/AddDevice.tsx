@@ -11,7 +11,9 @@ interface AddDeviceProps {
 const AddDevice: React.FC<AddDeviceProps> = ({ icon, name, power }) => {
   return (
     <View style={styles.biggestEaterContainer}>
-      <View style={styles.groupItem1}>{icon}</View>
+      <View style={styles.groupItem1}>
+        <Text>{icon}</Text>
+      </View>
       <View style={styles.groupItem2}>
         <Text style={styles.usedMostName}>{name}</Text>
         <Text style={styles.logo}>logo</Text>

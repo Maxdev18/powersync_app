@@ -6,7 +6,8 @@ import AddDevice from "../components/AddDevice";
 import styles from '../styles/overviewPage'
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import themeContext from '@/theme/themeContext';
 
 
 interface Device {
@@ -17,10 +18,12 @@ interface Device {
 }
 
 const Dashboard: React.FC = () => { 
-  const [devices, setDevices] = useState<Device[]>([]);
+  const [devices, setDevices] = useState<Device[]>([]); 
   const [lowDevices, setLowDevices] = useState(0);
   const [dailyConsumption, setDailyConsumption] = useState(0);
   const [estimatedCost, setEstimatedCost] = useState(0); 
+  const theme = useContext(themeContext); // get the theme from the context
+
   const getDevicesData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('devices'); // get the devices data from local storage
@@ -60,18 +63,19 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.app}>
-      <Text style={styles.title}>Overview</Text>
+    <ScrollView style={[styles.app, {backgroundColor: theme.backgroundColor}]}>
+      <Text style={[styles.title, {color: theme.color}]}>Overview</Text>
       <View style={styles.overviewContainer}>
         <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={dailyConsumption.toFixed(2)} kwh="kWh" />
         <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={lowDevices} />
         <OverviewCard iconName="cash-outline" iconColor="green" name="Estimated cost" num={estimatedCost} />
       </View>
 
+      <Text style={[styles.subTitle, {color:theme.color}]}>Power Usage</Text>
       <PowerUsage devices={devices} /> 
 
       <View>
-      <Text style={styles.subTitle}>Biggest eaters</Text>
+      <Text style={[styles.subTitle, {color: theme.color}]}>Biggest eaters</Text>
       <ScrollView style={styles.usedDevices}>
 
         {sortedDevices.map((device, index) => ( //map out all devices in descending order

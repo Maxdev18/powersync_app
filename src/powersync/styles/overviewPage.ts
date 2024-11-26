@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       height: 180,
       backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: 'rgba(0, 0, 0, 0.2)',
     },
     subFont: {
       fontSize: 16,
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(0, 0, 0, 0.2)',
       },
     subTitle: {
-        fontSize: 15,
+        fontSize: 17,
         fontWeight: 'bold',
         marginVertical: 8,
       },
