@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Alert, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, TextInput, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { UserService } from '@/Services/UserService';
 import { GroupService } from '@/Services/GroupService';
 import { DeviceService } from '@/Services/DeviceService';
 import styles from '../styles/device';
-import { Group } from '@/Types/Group';
+import { Group as GroupType } from '@/Types/Group';
 import { getData } from '@/storage/storage';
 
 interface Device {
@@ -29,6 +28,12 @@ const DevicesScreen = () => {
   const [deviceGroups, setDeviceGroups] = useState<DeviceGroup[]>([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showInput, setShowInput] = useState(false);
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [groupInputValue, setGroupInputValue] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [groupToDelete, setGroupToDelete] = useState<string | null>(null);
+  const [groupToUpdate, setGroupToUpdate] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDeviceGroups = async () => {
@@ -78,13 +83,13 @@ const DevicesScreen = () => {
         isExpanded: false,
       };
 
-      const group: Group = {
+      const group: GroupType = {
         name: newGroupName,
         numberOfDevices: 0,
         userId: (await getData("user")).id
-      }
+      };
 
-      await GroupService.createGroup(group)
+      await GroupService.createGroup(group);
       setDeviceGroups((prevGroups) => [...prevGroups, newGroup]);
       setShowInput(false);
       setNewGroupName('');
@@ -93,8 +98,37 @@ const DevicesScreen = () => {
     }
   };
 
-  const handleDeleteGroup = (groupId: string) => {
-    setDeviceGroups((prevGroups) => prevGroups.filter(group => group.id !== groupId));
+  const handleDeleteGroup = async (groupId: string) => {
+    const response = await GroupService.hasDevices(groupId);
+    if (response.data) {
+      Alert.alert('Sorry, it looks like you have devices in it');
+    } else {
+      const deleteResponse = await GroupService.deleteGroup(groupId);
+      if (!deleteResponse.isError) {
+        setDeviceGroups((prevGroups) => prevGroups.filter(group => group.id !== groupId));
+      } else {
+        Alert.alert('Error', deleteResponse.message);
+      }
+    }
+  };
+
+  const handleSaveGroup = async () => {
+    if (groupToUpdate && groupInputValue.trim()) {
+      const response = await GroupService.updateGroupName(groupToUpdate, groupInputValue);
+      if (!response.isError) {
+        setDeviceGroups((prevGroups) =>
+          prevGroups.map((group) =>
+            group.id === groupToUpdate ? { ...group, name: groupInputValue } : group
+          )
+        );
+        setModalVisible(false);
+        setGroupInputValue('');
+      } else {
+        Alert.alert('Error', response.message);
+      }
+    } else {
+      Alert.alert('Please enter a valid name');
+    }
   };
 
   const getBatteryColor = (batteryPercentage: number) => {
@@ -136,7 +170,12 @@ const DevicesScreen = () => {
               </Text>
               <TouchableOpacity
                 style={{ padding: 10 }}
-                onPress={() => handleDeleteGroup(group.id)}
+                onPress={() => {
+                  setModalVisible(true);
+                  setGroupToDelete(group.id);
+                  setGroupToUpdate(group.id);
+                  setGroupInputValue(group.name);
+                }}
               >
                 <Ionicons name="settings-outline" size={20} color="gray" />
               </TouchableOpacity>
@@ -155,12 +194,79 @@ const DevicesScreen = () => {
                     </Text>
                     <Text style={styles.deviceBattery}>{device.batteryPercentage}%</Text>
                   </View>
+                  <TouchableOpacity
+                    style={{ padding: 10 }}
+                    onPress={() => navigation.navigate('Edit Device')}
+                  >
+                    <Ionicons name="ellipsis-vertical" size={20} color="gray" />
+                  </TouchableOpacity>
                 </View>
               ))
             )}
           </View>
         ))}
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalView}>
+            {confirmDelete ? (
+              <>
+                <Text>{`Are you sure you want to delete ${deviceGroups.find(group => group.id === groupToDelete)?.name}?`}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleDeleteGroup(groupToDelete!);
+                      setConfirmDelete(false);
+                      setModalVisible(false);
+                    }}
+                    style={styles.modalButton}
+                  >
+                    <Text style={styles.modalButtonText}>Yes</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setConfirmDelete(false);
+                      setModalVisible(false);
+                    }}
+                    style={styles.modalButton}
+                  >
+                    <Text style={styles.modalButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              <>
+                <TextInput
+                  style={styles.modalInput}
+                  placeholder="Change Name"
+                  value={groupInputValue}
+                  onChangeText={setGroupInputValue}
+                />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <TouchableOpacity
+                    onPress={handleSaveGroup}
+                    style={styles.modalButton}
+                  >
+                    <Text style={styles.modalButtonText}>Save</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => setConfirmDelete(true)}
+                    style={[styles.modalButton, { backgroundColor: '#FF6B6B' }]}
+                  >
+                    <Text style={styles.modalButtonText}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          </View>
+        </View>
+      </Modal>
 
       {showInput ? (
         <View style={styles.inputContainer}>

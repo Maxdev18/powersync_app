@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Button } from 'react-native';
+import MapView from 'react-native-maps'//was not able to add
+
 
 const DeviceLocationScreen = () => {
   const theme = lightTheme;
@@ -14,7 +16,7 @@ const DeviceLocationScreen = () => {
         <Text style={styles.deviceInfoText}>Battery percentage: 35%</Text>
       </View>
       <View style={styles.placeholderBox}>
-        <Text style={styles.placeholderText}>Place holder</Text>
+        <Text style={styles.placeholderText}>Map place holder</Text>
       </View>
     </SafeAreaView>
   );

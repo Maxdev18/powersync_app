@@ -71,3 +71,7 @@ fs.rename(oldDirPath, newDirPath, (error) => {
     });
   });
 });
+
+const modulePath = path.resolve(__dirname, 'node_modules/react-native-maps');
+fs.writeFileSync(path.join(modulePath, 'lib', 'index.web.js'), 'module.exports = {}', 'utf-8');
+fs.copyFileSync(path.join(modulePath, 'lib', 'index.d.ts'), path.join(modulePath, 'lib', 'index.web.d.ts'));
