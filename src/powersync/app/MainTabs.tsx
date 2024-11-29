@@ -30,9 +30,9 @@ function AppNavigator() {
   return (
     <themeContext.Provider value = {darkMode ? theme.dark : theme.light}>
       {/* <NavigationContainer theme = {darkMode ? DarkTheme : DefaultTheme}> */}
-    <Tab.Navigator theme = {darkMode ? DarkTheme : DefaultTheme}
+    <Tab.Navigator theme={darkMode ? DarkTheme : DefaultTheme}
       screenOptions={{
-        tabBarStyle: { backgroundColor: '#313131' }, // Change background color here
+        tabBarStyle: { backgroundColor: '#000000', paddingVertical: 8, height: 56 }, // Change background color here
         tabBarActiveTintColor: '#ffffff', // Active icon color
         tabBarInactiveTintColor: '#a9a9a9', // Inactive icon color
       }}

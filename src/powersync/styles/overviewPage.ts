@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     app: {
       fontFamily: 'sans-serif', // This may vary depending on platform
-      borderWidth: 1,
       padding: 15,
       backgroundColor: '#FFF5E9',
       flex: 1, // Take up available screen space
