@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-
 const styles = StyleSheet.create({
     app: {
       fontFamily: 'sans-serif', // This may vary depending on platform
       borderWidth: 1,
       padding: 15,
-      backgroundColor: '#E9F5FF',
+      backgroundColor: '#FFF5E9',
       flex: 1, // Take up available screen space
     },
     icon:{
@@ -27,10 +26,8 @@ const styles = StyleSheet.create({
     },
     usedDevices: {
       borderRadius: 5,
-      height: 180,
+      height: 200,
       backgroundColor: 'white',
-      borderWidth: 1,
-      borderColor: 'rgba(0, 0, 0, 0.2)',
     },
     subFont: {
       fontSize: 16,
@@ -38,76 +35,94 @@ const styles = StyleSheet.create({
       margin: 5,
     },
     unique: {
-        fontSize: 21, 
-        fontWeight: 'bold',
-      },
+      fontSize: 36, 
+      fontWeight: 'bold',
+    },
     normalFont: {
-        fontSize: 14,
-        fontWeight: 'bold',
-      },
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
     item: {
-        borderRadius: 5,
-        backgroundColor: 'white',
-        borderWidth: 1,
-        width: '47%', 
-        padding: 5,  
-        paddingBottom: 0,
-        borderColor: 'rgba(0, 0, 0, 0.2)',
-      },
-      powerChart: {
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 1,
-        height: 120,
-        backgroundColor: 'white',
-        borderColor: 'rgba(0, 0, 0, 0.2)',
-      },
+      display: 'flex',
+      flexDirection: 'column',
+      borderRadius: 5,
+      backgroundColor: 'rgba(255, 255, 255, 70)',
+      width: '47%',
+      height: 120,
+      padding: 8,  
+      paddingBottom: 0,
+    },
+    itemOverRide: {
+      width: '100%'
+    },
+    overviewCardTextContainer: {
+      display: 'flex',
+      justifyContent: "space-between",
+      marginTop: 'auto',
+      marginBottom: 8,
+    },
+    overviewUnitTextDollar: {
+      fontWeight: 'bold',
+      fontSize: 36
+    },
+    overviewUnitText: {
+      marginTop: "auto",
+      fontSize: 20,
+      fontWeight: 'bold'
+    },
+    powerChart: {
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 120,
+      backgroundColor: 'white',
+    },
     subTitle: {
-        fontSize: 17,
-        fontWeight: 'bold',
-        marginVertical: 8,
-      },
-      weeklyConsumption: {
-        marginTop: 20,
-        backgroundColor: 'white',
-        borderRadius: 5,
-        borderWidth: 1,
-        padding: 10,
-        borderColor: 'rgba(0, 0, 0, 0.2)',
-      },
-
-      biggestEaterContainer: {
-        borderWidth: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 7,
-        borderRadius: 5,
-        backgroundColor: 'white',
-        borderColor: 'rgba(0, 0, 0, 0.2)',
-      },
-      
-      groupItem1: {
-        flexGrow: 1,
-        alignItems: 'center',
-      },
-      groupItem2: {
-        flexGrow: 4,
-        paddingLeft: 5,
-      },
-      usedMostName: {
-        fontSize: 18,
-        fontWeight: 'bold',
-      },
-      logo: {
-        fontSize: 14,
-        color: 'gray',
-      },
-      power: {
-        fontSize: 16,
-        fontWeight: 'bold',
-      },
+      fontSize: 17,
+      fontWeight: 'bold',
+      marginVertical: 8,
+    },
+    weeklyConsumption: {
+      marginTop: 20,
+      backgroundColor: 'white',
+      borderRadius: 5,
+      padding: 10,
+    },
+    biggestEaterContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 16,
+      borderRadius: 5,
+      backgroundColor: 'white',
+    },
+    groupItem1Text: {
+      color: 'white',
+    },
+    groupItem1: {
+      width: 36,
+      height: 36,
+      borderRadius: 50,
+      display: 'flex',
+      justifyContent: 'center',
+      alignContent: 'center',
+      alignItems: 'center',
+    },
+    groupItem2: {
+      marginLeft: 12,
+      flexGrow: 4,
+    },
+    usedMostName: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    logo: {
+      fontSize: 14,
+      color: 'gray',
+    },
+    power: {
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
   });
 
-
-  export default styles;
+export default styles;

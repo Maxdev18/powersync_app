@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 48,
-    backgroundColor: '#EDFAFF',
+    backgroundColor: '#FFF5E9',
     padding: 16,
     justifyContent: 'space-between', // Spaces elements from top to bottom
   },

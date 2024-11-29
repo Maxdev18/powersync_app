@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#edfaff',
+    backgroundColor: '#FFF5E9',
   },
 
   profileIconBackground: {
@@ -33,7 +33,6 @@ export default StyleSheet.create({
     borderColor: 'black',
     borderRadius: 5,
     width: '46%',
-    borderColor: 'rgba(0, 0, 0, 0.2)',
   },
 
   fullWidth: {

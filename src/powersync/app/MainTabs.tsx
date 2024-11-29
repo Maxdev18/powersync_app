@@ -8,7 +8,7 @@ import Profile from './profile';
 import Device from './device';
 import UpdateDevice from './updateDevice';
 import { EventRegister } from 'react-native-event-listeners'
-import { NavigationContainer, DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import theme from '../theme/theme';
 import themeContext from '../theme/themeContext';
 

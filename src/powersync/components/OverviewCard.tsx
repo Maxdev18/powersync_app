@@ -1,19 +1,20 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import styles from '../styles/overviewPage'
+import { Ionicons } from '@expo/vector-icons';
 // import Icon from 'react-native-vector-icons/Ionicons';
-const OverviewCard = ({iconName, iconColor, name, num, kwh }: any) => {
+const OverviewCard = ({iconName, name, num, text, style, iconColor, isLeft }: any) => {
   return (
-    <View style={styles.item}>
+    <View style={{...styles.item, ...style}}>
       <Text style={styles.normalFont}>{name}</Text>
-      <Text >
+      <Text style={isLeft ? {...styles.overviewCardTextContainer, justifyContent: "flex-start"} : {...styles.overviewCardTextContainer}}>
+        {isLeft && <Text style={styles.overviewUnitTextDollar}>{text}</Text>}
         <Text style={styles.unique}>{num} </Text>
-        <Text>{kwh}</Text>
+        {!isLeft && <Text style={styles.overviewUnitText}>{text}</Text>}
       </Text>
-      {/*   <Icon name={iconName} size={20} color={iconColor} style={styles.icon} /> */}
+      <Ionicons name={iconName} size={20} color={iconColor} style={styles.icon} />
     </View>
   );
 };
-
 
 export default OverviewCard;

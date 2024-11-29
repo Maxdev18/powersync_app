@@ -55,8 +55,6 @@ export class GroupService {
         id: doc.id,
       }));
 
-      console.log("Fetched Groups:", groups); // Log the groups to the console
-
       // Store the groups in local storage
       await storeData("groups", groups);
 

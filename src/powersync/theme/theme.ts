@@ -1,9 +1,7 @@
-
-
 const theme = {
     light: {
         theme: 'light',
-        backgroundColor: '#edfaff',
+        backgroundColor: '#FFF5E9',
         color: 'black',
     },
     dark: {

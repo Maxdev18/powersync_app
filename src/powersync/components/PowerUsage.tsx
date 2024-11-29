@@ -26,19 +26,15 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
 
   return (
     <View>
-      {/* <Text style={[styles.subTitle, {color:themeColor}]}>Power Usage</Text> */}
-
       <BarChart
         data={{
           labels: labels,
-          datasets: [
-            {
+          datasets: [{
               data: data,
-              
             },
           ],
         }}
-        width={Dimensions.get('window').width - 40} 
+        width={Dimensions.get('window').width - 30} 
         height={200}
         fromZero={true}
         yAxisInterval={5}

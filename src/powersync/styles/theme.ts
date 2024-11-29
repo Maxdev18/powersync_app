@@ -1,12 +1,12 @@
 export const lightTheme = {
-    backgroundColor: "#f7f9fc",
+    backgroundColor: "#FFF5E9",
     textColor: "#333",
     inputBackgroundColor: "#fff",
     inputTextColor: "#000",
     buttonColor: "#007bff",
     buttonTextColor: "#fff",
-    footerBackgroundColor: "#f0f0f0",
-    footerTextColor: "#333",
+    footerBackgroundColor: "#000000",
+    footerTextColor: "#fff",
 };
   
 export const darkTheme = {
