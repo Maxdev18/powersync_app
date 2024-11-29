@@ -101,7 +101,17 @@ const DevicesScreen = () => {
   const handleDeleteGroup = async (groupId: string) => {
     const response = await GroupService.hasDevices(groupId);
     if (response.data) {
-      Alert.alert('Sorry, it looks like you have devices in it');
+      Alert.alert(
+        "Please remove devices from group",
+        "",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          }
+        ]
+      );
     } else {
       const deleteResponse = await GroupService.deleteGroup(groupId);
       if (!deleteResponse.isError) {
