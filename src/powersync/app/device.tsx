@@ -156,6 +156,11 @@ const DevicesScreen = () => {
     return <Ionicons name={validIcon} size={20} color="black" />;
   };
 
+  const handleEditDevice = (deviceId: string) => {
+    setSelectedDeviceId(deviceId); // **Added this line to set selected device id**
+    navigation.navigate('Edit Device', { deviceId }); // **Updated to pass the selected deviceId**
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -206,8 +211,8 @@ const DevicesScreen = () => {
                   </View>
                   <TouchableOpacity
                     style={{ padding: 10 }}
-                    onPress={() => navigation.navigate('Edit Device')}
-                  >
+                    onPress={() => navigation.navigate('Edit Device', { deviceId: device.id })}
+                    >
                     <Ionicons name="ellipsis-vertical" size={20} color="gray" />
                   </TouchableOpacity>
                 </View>

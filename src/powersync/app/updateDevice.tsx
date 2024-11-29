@@ -8,10 +8,20 @@ import { getStyles } from "@/styles/updateDevice";
 import { db } from '../firebaseConfig';
 import { getData } from "@/storage/storage"; // Fetch user data from storage
 import { collection, getDocs, doc, getDoc, query, where } from 'firebase/firestore';
+import { useRoute, RouteProp } from '@react-navigation/native'; // Import useRoute and RouteProp
+
+// Define the type for the route params
+type EditDeviceRouteProp = RouteProp<{ 
+  // Specify the route name and its params
+  EditDevice: { deviceId: string }; 
+}, 'EditDevice'>;
 
 const EditDevice = () => {
+  const route = useRoute<EditDeviceRouteProp>(); // Use the route with correct type
+  const { deviceId } = route.params; // Access deviceId from the route params
+
   const [devices, setDevices] = useState<Device[]>([]);
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string>('');
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string>(deviceId || ''); // Set selectedDeviceId from deviceId passed
   const [deviceData, setDeviceData] = useState<Partial<Device>>({});
   const [groups, setGroups] = useState<{ id: string, name: string }[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<string>('');
