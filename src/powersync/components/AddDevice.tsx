@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import styles from '../styles/overviewPage'
 
 interface AddDeviceProps {
@@ -8,6 +8,10 @@ interface AddDeviceProps {
   power: number;
 }
 
+const AddDevice: React.FC<AddDeviceProps> = ({ icon, name, power }) => {
+
+  const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
 const AddDevice: React.FC<AddDeviceProps> = ({ name, power, bgColor }) => {
   return (
     <View style={styles.biggestEaterContainer}>
@@ -16,6 +20,7 @@ const AddDevice: React.FC<AddDeviceProps> = ({ name, power, bgColor }) => {
       </View>
       <View style={styles.groupItem2}>
         <Text style={styles.usedMostName}>{name}</Text>
+        {/* <Text style={styles.logo}>logo</Text> */}
       </View>
       <Text style={styles.power}>{power} kWh</Text>
     </View>

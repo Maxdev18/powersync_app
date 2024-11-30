@@ -3,7 +3,7 @@ import { View, Text} from 'react-native';
 import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import AddDevice from "../components/AddDevice";
-import styles from '../styles/overviewPage'
+import createStyles from '../styles/overviewPage'
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect, useContext } from 'react';
@@ -25,6 +25,7 @@ const Dashboard: React.FC = () => {
   const [estimatedCost, setEstimatedCost] = useState(0);
   const [firstName, setFirstName] = useState("")
   const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
 
   const getDevicesData = async () => {
     try {
@@ -76,12 +77,10 @@ const Dashboard: React.FC = () => {
       </View>
 
       <Text style={[styles.subTitle, {color:theme.color}]}>Power Usage</Text>
-      <PowerUsage devices={devices} />
-
-      <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={lowDevices} style={styles.itemOverRide} isLeft={false} />
+      <PowerUsage devices={devices} /> 
 
       <View>
-      <Text style={[styles.subTitle, {color: theme.color}]}>Biggest eaters</Text>
+      <Text style={styles.subTitle}>Biggest eaters</Text>
       <ScrollView style={styles.usedDevices}>
         {sortedDevices.map((device, index) => ( //map out all devices in descending order
           <AddDevice key={index} bgColor={generateRandomColor()} name={device.name} power={device.wattage} />

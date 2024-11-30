@@ -1,9 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import styles from '../styles/overviewPage'
+import createStyles from '../styles/overviewPage'
+import Icon from 'react-native-vector-icons/Ionicons';
+import themeContext from '@/theme/themeContext';
 import { Ionicons } from '@expo/vector-icons';
-// import Icon from 'react-native-vector-icons/Ionicons';
+import {  useContext } from 'react';
+
 const OverviewCard = ({iconName, name, num, text, style, iconColor, isLeft }: any) => {
+  const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
   return (
     <View style={{...styles.item, ...style}}>
       <Text style={styles.normalFont}>{name}</Text>
@@ -16,5 +21,8 @@ const OverviewCard = ({iconName, name, num, text, style, iconColor, isLeft }: an
     </View>
   );
 };
+
+// export default OverviewCard;
+// };
 
 export default OverviewCard;

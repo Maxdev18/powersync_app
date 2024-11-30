@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: { theme: any }) =>
+  StyleSheet.create({
     app: {
       fontFamily: 'sans-serif', // This may vary depending on platform
       padding: 15,
-      backgroundColor: '#FFF5E9',
+      backgroundColor:theme.theme === 'light' ? '#edfaff' : '#333333',
       flex: 1, // Take up available screen space
     },
     icon:{
@@ -15,7 +16,9 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      margin: 5
+      margin: 5,
+      color: theme.theme === 'light' ? 'black' : '#F3EBEB',
+      marginBottom: 15,
     },
     overviewContainer: {
       flexDirection: 'row',
@@ -25,8 +28,12 @@ const styles = StyleSheet.create({
     },
     usedDevices: {
       borderRadius: 5,
+   
+      backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
+      borderWidth: 1,
+      borderColor: 'rgba(0, 0, 0, 0.2)',
       height: 200,
-      backgroundColor: 'white',
+     
     },
     subFont: {
       fontSize: 16,
@@ -36,11 +43,15 @@ const styles = StyleSheet.create({
     unique: {
       fontSize: 36, 
       fontWeight: 'bold',
-    },
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
+      },
+      
+   
     normalFont: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
+      },
     item: {
       display: 'flex',
       flexDirection: 'column',
@@ -77,51 +88,50 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
     },
     subTitle: {
-      fontSize: 17,
-      fontWeight: 'bold',
-      marginVertical: 8,
-    },
-    weeklyConsumption: {
-      marginTop: 20,
-      backgroundColor: 'white',
-      borderRadius: 5,
-      padding: 10,
-    },
-    biggestEaterContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 16,
-      borderRadius: 5,
-      backgroundColor: 'white',
-    },
-    groupItem1Text: {
-      color: 'white',
-    },
-    groupItem1: {
-      width: 36,
-      height: 36,
-      borderRadius: 50,
-      display: 'flex',
-      justifyContent: 'center',
-      alignContent: 'center',
-      alignItems: 'center',
-    },
-    groupItem2: {
-      marginLeft: 12,
-      flexGrow: 4,
-    },
-    usedMostName: {
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-    logo: {
-      fontSize: 14,
-      color: 'gray',
-    },
-    power: {
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
+        fontSize: 17,
+        fontWeight: 'bold',
+        marginVertical: 8,
+      },
+      weeklyConsumption: {
+        marginTop: 20,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        borderWidth: 1,
+        padding: 10,
+        borderColor: 'rgba(0, 0, 0, 0.2)',
+      },
+
+      biggestEaterContainer: {
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 7,
+        borderRadius: 5,
+        backgroundColor: 'white',
+        borderColor: 'rgba(0, 0, 0, 0.2)',
+      },
+      
+      groupItem1: {
+        flexGrow: 1,
+        alignItems: 'center',
+      },
+      groupItem2: {
+        flexGrow: 4,
+        paddingLeft: 5,
+      },
+      usedMostName: {
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
+      logo: {
+        fontSize: 14,
+        color: 'gray',
+      },
+      power: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
   });
 
-export default styles;
+
+  export default createStyles;

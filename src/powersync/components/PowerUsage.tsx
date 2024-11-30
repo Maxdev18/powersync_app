@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { View, Text, Dimensions } from 'react-native';
-import styles from '../styles/overviewPage';
 import { BarChart } from 'react-native-chart-kit';
+import themeContext from '@/theme/themeContext';
+import {  useContext } from 'react';
 
 interface Device {
   name: string;
@@ -17,6 +18,8 @@ interface PowerUsageProps {
 }
 
 const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
+  
+  const theme = useContext(themeContext); // get the theme from the context
   // Sort devices by wattage in descending order and show three top devices
   const sortedDevices = [...devices].sort((a, b) => b.wattage - a.wattage).slice(0, 3);
 
@@ -39,15 +42,14 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
         fromZero={true}
         yAxisInterval={5}
         chartConfig={{
-          backgroundColor: '#FFFFFF',
-          backgroundGradientFrom: '#FFFFFF',
-          backgroundGradientTo: '#FFFFFF',
+          backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
+          backgroundGradientFrom: theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
+          backgroundGradientTo: theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
           decimalPlaces: 0,
-          color: () => `rgba(0, 0, 0, 3)`,
-          // labelColor: () => `black`,
+          color: () => theme.theme === 'light' ? 'black' : '#F3EBEB',
           propsForBackgroundLines: {
             strokeDasharray: '', // solid background lines
-            stroke: '#E0E0E0',
+            stroke: theme.theme === 'light' ? '#E0E0E0' : '#ffffff',
           },
           propsForLabels: {
             dy: 2,
