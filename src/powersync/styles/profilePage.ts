@@ -1,9 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-export default StyleSheet.create({
-  container: {
+const createStyles = (theme: { theme: any }) =>
+  StyleSheet.create({  
+    
+    container: {
     flex: 1,
-    backgroundColor: '#edfaff',
+    backgroundColor:theme.theme === 'light' ? '#edfaff' : '#333333',
   },
 
   profileIconBackground: {
@@ -18,6 +20,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     paddingLeft: 12,
     paddingTop: 12, 
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -27,13 +30,13 @@ export default StyleSheet.create({
     padding: 12,  
   },
   inputBox: {
-    backgroundColor: 'white',
+    backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
     padding: 6,
     borderWidth: 1, 
     borderColor: 'black',
     borderRadius: 5,
     width: '46%',
-    borderColor: 'rgba(0, 0, 0, 0.2)',
+    borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff'
   },
 
   fullWidth: {
@@ -43,6 +46,7 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
     paddingVertical: 5,
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   para: {
     textAlign: 'right',
@@ -51,11 +55,11 @@ export default StyleSheet.create({
     paddingRight: 15,
   },
   darkModeToggle: {
-    backgroundColor: 'white',
+    backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
     marginVertical: 10, 
     marginHorizontal: 12,
     borderWidth: 1,
-    borderColor: 'black',
+   borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff',
     borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',
@@ -70,6 +74,7 @@ export default StyleSheet.create({
   darkModeText: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   saveButton: {
     backgroundColor: '#12B8FF',
@@ -87,3 +92,5 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default createStyles;

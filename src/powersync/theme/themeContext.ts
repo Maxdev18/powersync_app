@@ -1,5 +1,5 @@
 
-import React, {createContext} from 'react';
+import {createContext} from 'react';
 import  Theme  from './theme';
 const themeContext = createContext(Theme.light);
 

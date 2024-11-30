@@ -3,7 +3,7 @@ import { View, Text} from 'react-native';
 import OverviewCard from '../components/OverviewCard';
 import PowerUsage from '../components/PowerUsage';
 import AddDevice from "../components/AddDevice";
-import styles from '../styles/overviewPage'
+import createStyles from '../styles/overviewPage'
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect, useContext } from 'react';
@@ -23,6 +23,7 @@ const Dashboard: React.FC = () => {
   const [dailyConsumption, setDailyConsumption] = useState(0);
   const [estimatedCost, setEstimatedCost] = useState(0); 
   const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
 
   const getDevicesData = async () => {
     try {
@@ -63,19 +64,19 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <ScrollView style={[styles.app, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.title, {color: theme.color}]}>Overview</Text>
+    <ScrollView style={styles.app}>
+      <Text style={styles.title}>Overview</Text>
       <View style={styles.overviewContainer}>
         <OverviewCard iconName="flash-outline" iconColor="blue" name="Power consumption" num={dailyConsumption.toFixed(2)} kwh="kWh" />
         <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={lowDevices} />
         <OverviewCard iconName="cash-outline" iconColor="green" name="Estimated cost" num={estimatedCost} />
       </View>
 
-      <Text style={[styles.subTitle, {color:theme.color}]}>Power Usage</Text>
+      <Text style={styles.subTitle}>Power Usage</Text>
       <PowerUsage devices={devices} /> 
 
       <View>
-      <Text style={[styles.subTitle, {color: theme.color}]}>Biggest eaters</Text>
+      <Text style={styles.subTitle}>Biggest eaters</Text>
       <ScrollView style={styles.usedDevices}>
 
         {sortedDevices.map((device, index) => ( //map out all devices in descending order

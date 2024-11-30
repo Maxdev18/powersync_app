@@ -1,5 +1,3 @@
-
-
 const theme = {
     light: {
         theme: 'light',

@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-
-const styles = StyleSheet.create({
+const createStyles = (theme: { theme: any }) =>
+  StyleSheet.create({
     app: {
       fontFamily: 'sans-serif', // This may vary depending on platform
       borderWidth: 1,
       padding: 15,
-      backgroundColor: '#E9F5FF',
+      backgroundColor:theme.theme === 'light' ? '#edfaff' : '#333333',
       flex: 1, // Take up available screen space
     },
     icon:{
@@ -17,7 +17,9 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 24,
       fontWeight: 'bold',
-      margin: 5
+      margin: 5,
+      color: theme.theme === 'light' ? 'black' : '#F3EBEB',
+      marginBottom: 15,
     },
     overviewContainer: {
       flexDirection: 'row',
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
     usedDevices: {
       borderRadius: 5,
       height: 180,
-      backgroundColor: 'white',
+      backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
       borderWidth: 1,
       borderColor: 'rgba(0, 0, 0, 0.2)',
     },
@@ -39,20 +41,22 @@ const styles = StyleSheet.create({
     },
     unique: {
         fontSize: 21, 
-        fontWeight: 'bold',
+        fontWeight: '600',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
     normalFont: {
         fontSize: 14,
         fontWeight: 'bold',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
     item: {
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
         borderWidth: 1,
         width: '47%', 
         padding: 5,  
         paddingBottom: 0,
-        borderColor: 'rgba(0, 0, 0, 0.2)',
+       borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff'
       },
       powerChart: {
         borderRadius: 5,
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'bold',
         marginVertical: 8,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       weeklyConsumption: {
         marginTop: 20,
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 7,
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
         borderColor: 'rgba(0, 0, 0, 0.2)',
       },
       
@@ -94,20 +99,24 @@ const styles = StyleSheet.create({
       groupItem2: {
         flexGrow: 4,
         paddingLeft: 5,
+        
       },
       usedMostName: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: '600',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
+        padding: 10
       },
       logo: {
         fontSize: 14,
-        color: 'gray',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       power: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '600',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
   });
 
 
-  export default styles;
+  export default createStyles;
