@@ -5,16 +5,15 @@ const createStyles = (theme: { theme: any }) =>
     
     container: {
     flex: 1,
-    backgroundColor:theme.theme === 'light' ? '#edfaff' : '#333333',
+    backgroundColor:theme.theme === 'light' ? '#FFF5E9' : '#151414',
   },
 
   profileIconBackground: {
     height: 120,
-    backgroundColor: '#58b4ff',
+    backgroundColor:theme.theme === 'light' ? '#58B4FF' : '#434343',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
   header: {
     fontSize: 26,
     fontWeight: 'bold',
@@ -30,13 +29,12 @@ const createStyles = (theme: { theme: any }) =>
     padding: 12,  
   },
   inputBox: {
-    backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
+    backgroundColor:theme.theme === 'light' ? '#ffffff' : '#434343',
     padding: 6,
     borderWidth: 1, 
-    borderColor: 'black',
     borderRadius: 5,
     width: '46%',
-    borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff'
+    borderColor: 'rgba(0, 0, 0, 0.2)' 
   },
 
   fullWidth: {
@@ -55,11 +53,11 @@ const createStyles = (theme: { theme: any }) =>
     paddingRight: 15,
   },
   darkModeToggle: {
-    backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
+    backgroundColor:theme.theme === 'light' ? '#ffffff' : '#434343',
     marginVertical: 10, 
     marginHorizontal: 12,
     borderWidth: 1,
-   borderColor: theme.theme === 'light' ? 'rgba(0, 0, 0, 0.2)' : '#ffffff',
+    borderColor: 'rgba(0, 0, 0, 0.2)' ,
     borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',

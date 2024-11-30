@@ -63,7 +63,7 @@ const Profile: React.FC = () => {
     return (
          <View style={styles.container}>
       <View style={styles.profileIconBackground}>
-        <Icon name="user-circle" size={60} color="#000000" />   
+        <Icon name="user-circle" size={60} style={{color: theme.theme === 'light' ? 'black' : 'white'}} />   
       </View>
 
       <Text style={styles.header}>Your profile</Text>
