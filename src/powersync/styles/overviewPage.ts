@@ -5,7 +5,7 @@ const createStyles = (theme: { theme: any }) =>
     app: {
       fontFamily: 'sans-serif', // This may vary depending on platform
       padding: 15,
-      backgroundColor:theme.theme === 'light' ? '#edfaff' : '#333333',
+      backgroundColor:theme.theme === 'light' ? '#FFF5E9' : '#151414',
       flex: 1, // Take up available screen space
     },
     icon:{
@@ -48,15 +48,15 @@ const createStyles = (theme: { theme: any }) =>
       
    
     normalFont: {
-        fontSize: 16,
-        fontWeight: 'bold',
+        fontSize: 14,
+        fontWeight: '700',
         color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
     item: {
       display: 'flex',
       flexDirection: 'column',
       borderRadius: 5,
-      backgroundColor: 'rgba(255, 255, 255, 70)',
+      backgroundColor:  theme.theme === 'light' ?'rgba(255, 255, 255, 70)': '#5E5B5B',
       width: '47%',
       height: 120,
       padding: 8,  
@@ -73,12 +73,14 @@ const createStyles = (theme: { theme: any }) =>
     },
     overviewUnitTextDollar: {
       fontWeight: 'bold',
-      fontSize: 36
+      fontSize: 36,
+      color: theme.theme === 'light' ? 'black' : '#F3EBEB',
     },
     overviewUnitText: {
       marginTop: "auto",
       fontSize: 20,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      color: theme.theme === 'light' ? 'black' : '#F3EBEB',
     },
     powerChart: {
       borderRadius: 5,
@@ -91,6 +93,7 @@ const createStyles = (theme: { theme: any }) =>
         fontSize: 17,
         fontWeight: 'bold',
         marginVertical: 8,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       weeklyConsumption: {
         marginTop: 20,
@@ -102,26 +105,31 @@ const createStyles = (theme: { theme: any }) =>
       },
 
       biggestEaterContainer: {
+        display: 'flex',
         borderWidth: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 7,
+        padding: 10,
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor:theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
         borderColor: 'rgba(0, 0, 0, 0.2)',
       },
       
       groupItem1: {
         flexGrow: 1,
         alignItems: 'center',
+        padding: 5,
+        width: 10,
       },
       groupItem2: {
         flexGrow: 4,
-        paddingLeft: 5,
+        // paddingLeft: 5,
+        padding: 5,
       },
       usedMostName: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       logo: {
         fontSize: 14,
@@ -130,6 +138,7 @@ const createStyles = (theme: { theme: any }) =>
       power: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
   });
 

@@ -20,7 +20,6 @@ const AddDevice: React.FC<AddDeviceProps> = ({name, power, bgColor }) => {
       </View>
       <View style={styles.groupItem2}>
         <Text style={styles.usedMostName}>{name}</Text>
-        {/* <Text style={styles.logo}>logo</Text> */}
       </View>
       <Text style={styles.power}>{power} kWh</Text>
     </View>

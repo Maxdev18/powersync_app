@@ -34,6 +34,7 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
           labels: labels,
           datasets: [{
               data: data,
+              colors: [(opacity = 1) => '#12B8FF', (opacity = 1) => '#12B8FF', (opacity = 1) => '#12B8FF'],
             },
           ],
         }}
@@ -47,19 +48,27 @@ const PowerUsage: React.FC<PowerUsageProps> = ({ devices }) => {
           backgroundGradientTo: theme.theme === 'light' ? '#ffffff' : '#5E5B5B',
           decimalPlaces: 0,
           color: () => theme.theme === 'light' ? 'black' : '#F3EBEB',
-          propsForBackgroundLines: {
+          propsForBackgroundLines: {// Customize background lines - vertical lines
             strokeDasharray: '', // solid background lines
-            stroke: theme.theme === 'light' ? '#E0E0E0' : '#ffffff',
+            stroke: '#E0E0E0',
           },
           propsForLabels: {
             dy: 2,
             // dx: -8, // move labels closer to the left side
           },
+          // propsForBackgroundLines: {
+          //   stroke: 'black', // Change this to the desired color for inner lines
+          //   strokeDasharray: '', // Optional: Customize the dash pattern
+          // },
         }}
         style={{
           marginVertical: 6,
           borderRadius: 10,
+          
         }}
+        // withInnerLines={false}
+        withCustomBarColorFromData
+        flatColor
       />
     </View>
   );

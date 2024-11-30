@@ -69,7 +69,7 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <ScrollView style={[styles.app, {backgroundColor: theme.backgroundColor}]}>
+    <ScrollView style={[styles.app]}>
       <Text style={[styles.title, {color: theme.color}]}>Welcome, {firstName}</Text>
       <View style={styles.overviewContainer}>
         <OverviewCard iconName="flash-outline" iconColor="#12B8FF" name="Power consumption" num={dailyConsumption.toFixed(2)} text="kWh" isLeft={false}/>
@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
 
       <Text style={[styles.subTitle, {color:theme.color}]}>Power Usage</Text>
       <PowerUsage devices={devices} /> 
-
+    
       <View>
       <Text style={styles.subTitle}>Biggest eaters</Text>
       <ScrollView style={styles.usedDevices}>
