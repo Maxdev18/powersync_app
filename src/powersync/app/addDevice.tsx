@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { DeviceService } from "@/Services/DeviceService";
@@ -6,8 +6,8 @@ import { getData } from "@/storage/storage"; // Fetch user data from storage
 import { db } from "../firebaseConfig";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { Device } from "@/Types/Device";
-import { darkTheme, lightTheme } from "@/styles/theme";
-import { getStyles } from "@/styles/addDevice";
+import  createStyles  from "@/styles/addDevice";
+import themeContext from '@/theme/themeContext';
 
 const AddDevice = () => {
   const [errorMessage, setErrorMessage] = useState<Response | void>();
@@ -30,6 +30,8 @@ const AddDevice = () => {
     }
   });
 
+  const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
   const [groups, setGroups] = useState<{ id: string, name: string }[]>([]);
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [message, setMessage] = useState<string | null>(null); // State variable for the message 
@@ -137,8 +139,8 @@ const AddDevice = () => {
     }
   };
 
-  const theme = lightTheme;
-  const styles = getStyles(theme);
+  // const theme = lightTheme;
+  // const styles = getStyles(theme);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -165,8 +167,8 @@ const AddDevice = () => {
               style={styles.input}
               value={deviceData.name}
               onChangeText={(value) => handleChange("name", value)}
-              placeholder="Enter device name"
-              placeholderTextColor={theme.textColor}
+              placeholder="Enter device name..."
+              placeholderTextColor={theme.theme === 'light' ? 'black' : '#F3EBEB'}
             />
           </View>
 
@@ -199,8 +201,8 @@ const AddDevice = () => {
               style={styles.input}
               value={deviceData.serialNumber}
               onChangeText={(value) => handleChange("serialNumber", value)}
-              placeholder="Enter Serial Number"
-              placeholderTextColor={theme.textColor}
+              placeholder="Enter Serial Number..."
+              placeholderTextColor={theme.theme === 'light' ? 'black' : '#F3EBEB'}
             />
           </View>
           
@@ -211,7 +213,7 @@ const AddDevice = () => {
               style={styles.picker}
               onValueChange={(itemValue) => handleChange("type", itemValue)}
             >
-              <Picker.Item label="" value="" />
+              <Picker.Item label="N/A" value="" />
               <Picker.Item label="Phone" value="Phone" />
               <Picker.Item label="Tablet" value="Tablet" />
               <Picker.Item label="Headphones" value="Headphones" />
@@ -226,7 +228,7 @@ const AddDevice = () => {
               value={String(deviceData.cycles)}  // Convert to string
               onChangeText={(value) => handleChange("cycles", value)}
               placeholder="000"
-              placeholderTextColor={theme.textColor}
+              placeholderTextColor={theme.theme === 'light' ? 'black' : '#F3EBEB'}
             />
           </View>
 
@@ -250,9 +252,9 @@ const AddDevice = () => {
               style={styles.textarea}
               value={deviceData.notes}
               onChangeText={(value) => handleChange("notes", value)}
-              placeholder="Enter any notes"
+              placeholder="Enter any notes..."
               multiline={true}
-              placeholderTextColor={theme.textColor}
+              placeholderTextColor={theme.theme === 'light' ? 'black' : '#F3EBEB'}
             />
           </View>
           

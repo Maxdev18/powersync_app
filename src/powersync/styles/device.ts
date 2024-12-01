@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-const styles = StyleSheet.create({
+const createStyles = (theme: { theme: any }) =>
+  StyleSheet.create({  
   container: {
     flex: 1,
-    backgroundColor: '#FFF5E9',
+    backgroundColor:theme.theme === 'light' ? '#FFF5E9' : '#151414',
     padding: 16,
   },
   headerContainer: {
@@ -15,9 +16,10 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   addDeviceButton: {
-    backgroundColor: '#A0E7FF',
+    backgroundColor: '#47FFA3',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 8,
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   deviceGroup: {
-    backgroundColor: '#fff',
+    backgroundColor:theme.theme === 'light' ? '#FFFFFF' : '#434343',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -48,6 +50,7 @@ const styles = StyleSheet.create({
   deviceGroupTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   deviceItem: {
     flexDirection: 'row',
@@ -61,6 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 8,
     fontSize: 14,
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   batteryContainer: {
     flexDirection: 'row',
@@ -72,7 +76,7 @@ const styles = StyleSheet.create({
   },
   deviceBattery: {
     fontSize: 14,
-    color: '#555',
+    color: theme.theme === 'light' ? 'black' : '#F3EBEB',
   },
   addGroupButton: {
     backgroundColor: '#A0E7FF',
@@ -185,4 +189,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default createStyles;

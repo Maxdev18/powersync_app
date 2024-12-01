@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert, TextInput, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { GroupService } from '@/Services/GroupService';
 import { DeviceService } from '@/Services/DeviceService';
-import styles from '../styles/device';
+import createStyles from '../styles/device';
 import { Group as GroupType } from '@/Types/Group';
 import { getData } from '@/storage/storage';
+import themeContext from '@/theme/themeContext';
 
 interface Device {
   id: string;
@@ -34,6 +35,8 @@ const DevicesScreen = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [groupToDelete, setGroupToDelete] = useState<string | null>(null);
   const [groupToUpdate, setGroupToUpdate] = useState<string | null>(null);
+  const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
 
   useEffect(() => {
     const fetchDeviceGroups = async () => {
@@ -192,7 +195,7 @@ const DevicesScreen = () => {
                   setGroupInputValue(group.name);
                 }}
               >
-                <Ionicons name="settings-outline" size={20} color="gray" />
+                <Ionicons name="settings-outline" size={20} color={theme.theme === 'light' ? 'black' : '#F3EBEB'} />
               </TouchableOpacity>
             </TouchableOpacity>
 

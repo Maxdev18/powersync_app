@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-export const getStyles = (theme: any) =>
+const createStyles = (theme: { theme: any }) =>
     StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: theme.backgroundColor,
         justifyContent: "space-between",
+        backgroundColor:theme.theme === 'light' ? '#FFF5E9' : '#151414',
+
       },
       scrollContainer: {
         flexGrow: 1,
@@ -19,7 +20,7 @@ export const getStyles = (theme: any) =>
         alignSelf: "flex-start",
       },
       backButtonText: {
-        color: theme.buttonColor,
+        // color: theme.buttonColor,
         textDecorationLine: "underline",
       },
       imageContainer: {
@@ -38,14 +39,14 @@ export const getStyles = (theme: any) =>
       title: {
         fontSize: 20,
         fontWeight: "bold",
-        color: theme.textColor,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
         marginBottom: 20,
       },
       formGroup: {
         marginBottom: 15,
       },
       textColor: {
-        color: theme.textColor,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       input: {
         width: "100%",
@@ -54,8 +55,8 @@ export const getStyles = (theme: any) =>
         borderRadius: 5,
         borderColor: "#ccc",
         borderWidth: 1,
-        backgroundColor: theme.inputBackgroundColor,
-        color: theme.inputTextColor,
+        backgroundColor:theme.theme === 'light' ? '#FFFFFF' : '#434343',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       textarea: {
         width: "100%",
@@ -65,8 +66,8 @@ export const getStyles = (theme: any) =>
         borderColor: "#ccc",
         borderWidth: 1,
         height: 80,
-        backgroundColor: theme.inputBackgroundColor,
-        color: theme.inputTextColor,
+        backgroundColor:theme.theme === 'light' ? '#FFFFFF' : '#434343',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       picker: {
         width: "100%",
@@ -74,35 +75,36 @@ export const getStyles = (theme: any) =>
         borderColor: "#ccc",
         borderWidth: 1,
         borderRadius: 5,
-        backgroundColor: theme.inputBackgroundColor,
-        color: theme.inputTextColor,
+        backgroundColor:theme.theme === 'light' ? '#FFFFFF' : '#434343',
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       scanButton: {
-        backgroundColor: theme.buttonColor,
+        backgroundColor:'#12B8FF', 
         borderRadius: 25,
         paddingVertical: 10,
         paddingHorizontal: 20,
         alignSelf: "flex-end",
       },
       scanButtonText: {
-        color: theme.buttonTextColor,
+        // color: theme.buttonTextColor,
       },
       saveButton: {
-        backgroundColor: theme.buttonColor,
-        borderRadius: 5,
-        padding: 15,
+        backgroundColor: '#12B8FF',
+        borderRadius: 25,
+        padding: 8,
         alignItems: "center",
         marginTop: 20,
       },
       saveButtonText: {
-        color: theme.buttonTextColor,
+        color: '#F3EBEB',
         fontWeight: "bold",
+        fontSize: 22,
       },
       footer: {
         flexDirection: "row",
         justifyContent: "space-around",
         padding: 10,
-        backgroundColor: theme.footerBackgroundColor,
+        backgroundColor:theme.theme === 'light' ? '#FFFFFF' : '#434343',
         borderTopWidth: 1,
         borderColor: "#ccc",
       },
@@ -110,10 +112,11 @@ export const getStyles = (theme: any) =>
         alignItems: "center",
       },
       footerButtonText: {
-        color: theme.footerTextColor,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       message: { textAlign: "center", marginBottom: 10, fontSize: 16, }, 
       errorMessage: { color: '#FF6464', }, 
       successMessage: { color: '#4CAF50', },
     });
   
+    export default createStyles;

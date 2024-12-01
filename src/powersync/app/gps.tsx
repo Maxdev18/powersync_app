@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Button } from 'react-native';
-import MapView from 'react-native-maps'//was not able to add
-
-
+// import MapView from 'react-native-maps'//was not able to add
+import themeContext from '@/theme/themeContext';
+import { useContext } from 'react';
 const DeviceLocationScreen = () => {
-  const theme = lightTheme;
-  const styles = getStyles(theme);
-
+  // const theme = lightTheme;
+  // const styles = getStyles(theme);
+  const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.deviceInfoContainer}>
@@ -22,34 +23,28 @@ const DeviceLocationScreen = () => {
   );
 };
 
-const lightTheme = {
-  backgroundColor: '#fff',
-  textColor: '#000',
-  buttonColor: '#1E90FF',
-  buttonText: '#fff',
-};
 
-const getStyles = (theme: any) =>
+const createStyles = (theme: { theme: any }) =>
     StyleSheet.create({
       container: {
         flex: 1,
-        backgroundColor: theme.backgroundColor,
+        backgroundColor:theme.theme === 'light' ? '#FFFFFF' : '#151414',
       },
       deviceInfoContainer: {
         padding: 16,
-        backgroundColor: '#f0f0f0',
+        backgroundColor:theme.theme === 'light' ? '#FFF5E9' : '#151414',
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
       },
       deviceInfoTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: theme.textColor,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       deviceInfoText: {
         fontSize: 16,
         marginTop: 4,
-        color: theme.textColor,
+        color: theme.theme === 'light' ? 'black' : '#F3EBEB',
       },
       placeholderBox: {
         flex: 1,
@@ -62,18 +57,6 @@ const getStyles = (theme: any) =>
       placeholderText: {
         fontSize: 18,
         color: '#888',
-      },
-      navBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 16,
-        borderTopWidth: 1,
-        borderTopColor: '#ccc',
-        backgroundColor: theme.backgroundColor,
-      },
-      navItem: {
-        fontSize: 16,
-        color: theme.textColor,
       },
     });
 

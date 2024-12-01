@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Picker } from '@react-native-picker/picker';
 import { DeviceService } from "@/Services/DeviceService";
 import { Device } from "@/Types/Device";
-import { darkTheme, lightTheme } from "@/styles/theme";
-import { getStyles } from "@/styles/updateDevice";
+// import { darkTheme, lightTheme } from "@/styles/theme";
+// import { getStyles } from "@/styles/updateDevice";
 import { db } from '../firebaseConfig';
 import { getData } from "@/storage/storage"; // Fetch user data from storage
 import { collection, getDocs, doc, getDoc, query, where } from 'firebase/firestore';
 import { useRoute, RouteProp } from '@react-navigation/native'; // Import useRoute and RouteProp
+import  createStyles  from "@/styles/updateDevice";
+import themeContext from '@/theme/themeContext';
 
 // Define the type for the route params
 type EditDeviceRouteProp = RouteProp<{ 
@@ -17,6 +19,9 @@ type EditDeviceRouteProp = RouteProp<{
 }, 'EditDevice'>;
 
 const EditDevice = () => {
+
+  const theme = useContext(themeContext); // get the theme from the context
+  const styles = createStyles(theme);
   const route = useRoute<EditDeviceRouteProp>(); // Use the route with correct type
   const { deviceId } = route.params; // Access deviceId from the route params
 
@@ -150,8 +155,7 @@ const EditDevice = () => {
     }
   };
 
-  const theme = lightTheme;
-  const styles = getStyles(theme);
+
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -250,3 +254,5 @@ const EditDevice = () => {
 };
 
 export default EditDevice;
+
+
