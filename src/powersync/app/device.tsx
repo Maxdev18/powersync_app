@@ -29,7 +29,6 @@ const DevicesScreen = () => {
   const [deviceGroups, setDeviceGroups] = useState<DeviceGroup[]>([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showInput, setShowInput] = useState(false);
-  const [selectedDeviceId, setSelectedDeviceId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [groupInputValue, setGroupInputValue] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -159,11 +158,6 @@ const DevicesScreen = () => {
     return <Ionicons name={validIcon} size={20} color="black" />;
   };
 
-  const handleEditDevice = (deviceId: string) => {
-    setSelectedDeviceId(deviceId); // **Added this line to set selected device id**
-    navigation.navigate('Edit Device', { deviceId }); // **Updated to pass the selected deviceId**
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -214,7 +208,7 @@ const DevicesScreen = () => {
                   </View>
                   <TouchableOpacity
                     style={{ padding: 10 }}
-                    onPress={() => navigation.navigate('Edit Device', { deviceId: device.id })}
+                    onPress={() => navigation.navigate('updateDevice', { deviceId: device.id })}
                     >
                     <Ionicons name="ellipsis-vertical" size={20} color="gray" />
                   </TouchableOpacity>

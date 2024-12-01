@@ -42,7 +42,9 @@ export default function AppNavigator() {
           />
         </>
       ) : (
-        <Stack.Screen name="MainTabs" component={MainTabs} />
+        <>
+          <Stack.Screen name="MainTabs" component={MainTabs} />
+        </>
       )}
     </Stack.Navigator>
   );
