@@ -29,7 +29,6 @@ function AppNavigator() {
 
   return (
     <themeContext.Provider value = {darkMode ? theme.dark : theme.light}>
-      {/* <NavigationContainer theme = {darkMode ? DarkTheme : DefaultTheme}> */}
     <Tab.Navigator theme={darkMode ? DarkTheme : DefaultTheme}
       screenOptions={{
         tabBarStyle: { backgroundColor: '#000000', paddingVertical: 8, height: 56 }, // Change background color here
@@ -99,9 +98,7 @@ function AppNavigator() {
           ),
         }} 
       />
-      {/* Add more screens with icons as needed */}
     </Tab.Navigator>
-    {/* </NavigationContainer> */}
     </themeContext.Provider>
   );
 }
