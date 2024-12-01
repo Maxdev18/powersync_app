@@ -77,7 +77,9 @@ const Dashboard: React.FC = () => {
       </View>
 
       <Text style={[styles.subTitle, {color:theme.color}]}>Power Usage</Text>
-      <PowerUsage devices={devices} /> 
+      <PowerUsage devices={devices} />
+
+      <OverviewCard iconName="alert-outline" iconColor="red" name="Low devices" num={lowDevices} style={styles.itemOverRide} isLeft={false} />
     
       <View>
       <Text style={styles.subTitle}>Biggest eaters</Text>
