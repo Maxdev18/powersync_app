@@ -8,8 +8,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect, useContext } from 'react';
 import themeContext from '@/theme/themeContext';
+import { useIsFocused } from "@react-navigation/native";
 import { getData } from '@/storage/storage';
-
+import { GroupService } from '@/Services/GroupService';
+import { DeviceService } from '@/Services/DeviceService';
 
 interface Device {
   name: string;
@@ -26,9 +28,12 @@ const Dashboard: React.FC = () => {
   const [firstName, setFirstName] = useState("")
   const theme = useContext(themeContext); // get the theme from the context
   const styles = createStyles(theme);
+  const isFocused = useIsFocused();
 
   const getDevicesData = async () => {
     try {
+      const groups = await GroupService.getGroupsByUserFromStorage();
+      await DeviceService.getDevicesByGroupIds(groups.data?.map((group: any) => group.id));
       const jsonValue = await AsyncStorage.getItem('devices'); // get the devices data from local storage
       const data = jsonValue != null ? JSON.parse(jsonValue) : null;
       setDevices(data); //now devices is an array of objects
@@ -66,7 +71,7 @@ const Dashboard: React.FC = () => {
     }
     getUserFirstName()
     getDevicesData();
-  }, []);
+  }, [isFocused]);
 
   return (
     <ScrollView style={[styles.app]}>

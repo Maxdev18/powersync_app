@@ -6,7 +6,7 @@ import { User } from '@/Types/User';
 import { Response } from '@/Types/Reponse';
 import styles from '../styles/loginPage'
 
-export default function RegistrationScreen({ onRegistrationSuccess }: any) {
+export default function RegistrationScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -15,7 +15,6 @@ export default function RegistrationScreen({ onRegistrationSuccess }: any) {
   const navigation = useNavigation();
   
   const handleRegister = async () =>{// this is called when button is pressed
-      Alert.alert('You have been registered smartass.');
       if(email === '' || password === '' || firstName === '' || lastName === '') {
         Alert.alert('Error', 'Please enter your email and password.');
         return;
@@ -30,7 +29,7 @@ export default function RegistrationScreen({ onRegistrationSuccess }: any) {
 
       const response: Response = await UserService.createUser(user)
       if(!response.isError) {
-        onRegistrationSuccess()
+        navigateLogin()
       } else {
         setErrorMessage(response)
       }

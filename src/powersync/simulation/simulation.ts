@@ -12,9 +12,9 @@ import { Alert } from "react-native"
 export const startDeviceSimulation = (): void => {
   const interval = 10000
 
-  // setInterval(async () => {
-  //   generateRandomDeviceData()
-  // }, interval)
+  setInterval(async () => {
+    generateRandomDeviceData()
+  }, interval)
 }
 
 async function generateRandomDeviceData(): Promise<void> {

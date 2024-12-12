@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { GroupService } from '@/Services/GroupService';
 import { DeviceService } from '@/Services/DeviceService';
 import createStyles from '../styles/device';
+import { useIsFocused } from "@react-navigation/native";
 import { Group as GroupType } from '@/Types/Group';
 import { getData } from '@/storage/storage';
 import themeContext from '@/theme/themeContext';
@@ -36,15 +37,17 @@ const DevicesScreen = () => {
   const [groupToUpdate, setGroupToUpdate] = useState<string | null>(null);
   const theme = useContext(themeContext); // get the theme from the context
   const styles = createStyles(theme);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const fetchDeviceGroups = async () => {
       try {
-        const response = await GroupService.getGroupsByUserFromStorage();
-        if (response.isError) {
-          Alert.alert('Error', response.message);
+        const groups = await GroupService.getGroupsByUserFromStorage();
+        await DeviceService.getDevicesByGroupIds(groups.data?.map((group: any) => group.id));
+        if (groups.isError) {
+          Alert.alert('Error', groups.message);
         } else {
-          const groupsData = Array.isArray(response.data) ? response.data : [];
+          const groupsData = Array.isArray(groups.data) ? groups.data : [];
           const groupIds = groupsData.map((group: any) => group.id);
 
           const devicesResponse = await DeviceService.getDevicesByGroupIds(groupIds);
@@ -66,7 +69,7 @@ const DevicesScreen = () => {
     };
 
     fetchDeviceGroups();
-  }, []);
+  }, [isFocused]);
 
   const toggleGroupExpansion = (groupId: string) => {
     setDeviceGroups((prevGroups) =>
