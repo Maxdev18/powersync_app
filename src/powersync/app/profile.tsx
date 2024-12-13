@@ -27,6 +27,7 @@ const Profile: React.FC = () => {
 
     const handleDataChange = async (field:string, newData: string) => {
       try {
+        console.log({[field]: newData})
         const updatedUserData = { ...userData, [field]: newData }; //copy userData obj and updated the field
         setUserData(updatedUserData);  
         // Save the updated userData back to local Storage
@@ -37,8 +38,8 @@ const Profile: React.FC = () => {
       }
     }
 
-    const onDataChange = (field:string,event:any) => {
-      const newData = event.target.value;
+    const onDataChange = (field:string,data:any) => {
+      const newData = data;
       handleDataChange(field,newData); //this function will change the data in local storage
     };
 
@@ -48,8 +49,10 @@ const Profile: React.FC = () => {
 
     const updateUser = async () => {
       try{
+        console.log(userData)
         if (!userData || !userData.id) return; // if userData or userData.id is null, return
         await UserService.updateUser(userData);
+        await AsyncStorage.setItem('user', JSON.stringify(userData)); // get the devices data from local storage
       }catch(e){
         console.error('Error updating user:', e);
       }
@@ -66,17 +69,17 @@ const Profile: React.FC = () => {
         <View style={styles.inputContainer}>
           <View style={styles.inputBox}> 
             <Text style={[{color: theme.color}]}>First name</Text> 
-            <TextInput style={styles.input} value={userData.firstName} onChange={() => onDataChange('firstName',event)} />
+            <TextInput style={styles.input} value={userData.firstName} onChangeText={(data) => onDataChange('firstName', data)} />
           </View>
 
           <View style={styles.inputBox}> 
             <Text style={{color: theme.color}}>Last name</Text>
-            <TextInput style={styles.input} value= {userData.lastName} onChange={() => onDataChange('lastName',event)} />
+            <TextInput style={styles.input} value= {userData.lastName} onChangeText={(data) => onDataChange('lastName',data)} />
           </View>
 
           <View style={[styles.inputBox, styles.fullWidth]}>
             <Text style={[{color: theme.color}]}>Email</Text>
-            <TextInput style={styles.input} value= {userData.email} onChange={() => onDataChange('email',event)} />
+            <TextInput style={styles.input} value= {userData.email} onChangeText={(data) => onDataChange('email',data)} />
           </View>
 
           <View style={[styles.inputBox, styles.fullWidth]}>

@@ -41,6 +41,7 @@ const Dashboard: React.FC = () => {
       console.error('Error retrieving devices data from local storage', e);
     }
   };
+
   //sort devices by wattage and display top 5
   const sortedDevices = [...devices].sort((a, b) => b.wattage - a.wattage).slice(0, 5);
   const countLowBatteryDevices = () => { //simply filter out devices 
