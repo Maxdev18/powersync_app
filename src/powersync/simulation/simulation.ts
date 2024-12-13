@@ -20,8 +20,8 @@ export const startDeviceSimulation = (): void => {
 async function generateRandomDeviceData(): Promise<void> {
   const devices: Response = await DeviceService.getDevices()
   const updatedDevices: Device[] = []
-
-  if(devices.data.length > 0) {
+  
+  if(!devices.isError) {
     for(let i = 0; i < devices.data.length; i++) {
       const device: Device = devices.data[i]
       const randomBatteryPercentage = Math.ceil(Math.random() * 100)

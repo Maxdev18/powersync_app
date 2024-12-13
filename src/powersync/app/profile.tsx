@@ -85,7 +85,6 @@ const Profile: React.FC = () => {
           <View style={[styles.inputBox, styles.fullWidth]}>
             <Text style={[{color: theme.color}]}>Password</Text>
             <TextInput style={styles.input} value={password} onChangeText={setPassword} secureTextEntry editable={false} />
-            <Text style={[{color: theme.color}]}>wont let user change unless they click change password</Text>
           </View>
         </View>
 

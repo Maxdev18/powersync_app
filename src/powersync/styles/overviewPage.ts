@@ -118,8 +118,7 @@ const createStyles = (theme: { theme: any }) =>
       groupItem1: {
         flexGrow: 1,
         alignItems: 'center',
-        padding: 5,
-        width: 10,
+        minHeight: 16
       },
       groupItem2: {
         flexGrow: 4,

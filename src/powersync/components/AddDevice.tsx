@@ -15,7 +15,7 @@ const AddDevice: React.FC<AddDeviceProps> = ({name, power, bgColor }) => {
 // const AddDevice: React.FC<AddDeviceProps> = ({ name, power, bgColor }) => {
   return (
     <View style={styles.biggestEaterContainer}>
-      <View style={{...styles.groupItem1, backgroundColor: bgColor }}>
+      <View style={{...styles.groupItem1, backgroundColor: bgColor, borderRadius: 100, width: 16 }}>
       <Text style={styles.groupItem1Text}>{name[0].toUpperCase()}</Text>
       </View>
       <View style={styles.groupItem2}>
